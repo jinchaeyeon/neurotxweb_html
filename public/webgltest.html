@@ -1,0 +1,1015 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/seedrandom@3/seedrandom.js"></script>
+    <script>Math.seedrandom('a22ebc7c488a3a47');</script>
+    <script src="https://unpkg.com/mockdate@2/src/mockdate.js"></script>
+    <script>MockDate.set('2000-01-01', 0);</script>
+    <script src="https://unpkg.com/d3@5.14.2"></script>
+    <script src="https://unpkg.com/d3fc@15.0.0"></script>
+    <script src="https://unpkg.com/d3fc-webgl"></script>
+<style>
+  d3fc-group.cartesian-chart {
+    grid-template-rows: 0 auto 1fr auto 0;
+}
+  d3fc-group.cartesian-chart>.bottom-axis {
+    height: 0px;
+}
+#chart5>d3fc-group.cartesian-chart>.bottom-axis {
+    height: 30px;
+}
+  .domain{
+    stroke:#c0c0c0;
+  }
+  .right-axis{
+    display:none;
+  }
+.series {
+  stroke: #06c;
+  fill: #9cf;
+}
+
+</style>
+<script>
+  function mousemoveOnTop(e) {
+
+var x = e.clientX;
+var y = e.clientY;
+
+$("#line_v").css("left",x-8);
+$("#line_v").css("display","block");
+
+
+}
+</script>
+  </head>
+<body style="background-color: #fff;">
+  <input type="button" value="Realtime Start!" onclick="startTimer()">
+<!--   <input type="button" value="Send Binary!" onclick="sendBinaryData()">
+  <input type="button" value="Recv Binary!" onclick="recvBinaryData()"> -->
+  
+  
+<div onmousemove="mousemoveOnTop(event)" onmouseout="" style="position:relative">
+ 
+  <div id="line_v" style="display:none;width:1px;height:1080px;background:#696969;position:absolute;top:0px;left:0px;"> </div>
+  <div  onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:rgb(0, 0, 0);font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;PPG</div><d3fc-canvas id="chart0" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(0)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+  <div onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:black;font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;EEG1</div><d3fc-canvas id="chart1" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(1)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+
+  <div onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:rgb(0, 0, 0);font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;EEG2</div><d3fc-canvas id="chart2" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(2)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+  <div onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:black;font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;X</div><d3fc-canvas id="chart3" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(3)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+
+  <div onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:black;font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;Y</div><d3fc-canvas id="chart4" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(4)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+
+  <div onmouseover="this.style='background:#none'" onmouseleave="this.style='background:none'">
+    <div style="width:50px;float:left;height:180;background:#c0c0c0;color:black;font-size:9pt;font-family: 'Courier New', Courier, monospace;"><br>&nbsp;Z</div><d3fc-canvas id="chart5" style="width:calc( 100% - 50px );float:left;height:180;border-top: 1px solid #c0c0c0;" ondblclick="selectChart(5)" set-webgl-viewport ></d3fc-canvas>
+    <div style="clear:both"></div>
+  </div>
+</div>
+<div id="div_console"></div>
+
+<!--   <div id="chart0" style="height:100" ondblclick="selectChart(0)"></div>
+  <h3>EEG1</h3>
+  <div id="chart1" style="height:100" ondblclick="selectChart(1)"></div>
+  <h3>EEG2</h3>
+  <div id="chart2" style="height:100" ondblclick="selectChart(2)"></div>
+  <h3>X</h3>
+  <div id="chart3" style="height:100" ondblclick="selectChart(3)"></div>
+  <h3>Y</h3>
+  <div id="chart4" style="height:100" ondblclick="selectChart(4)"></div>
+  <h3>Z</h3>
+  <div id="chart5" style="height:100" ondblclick="selectChart(5)"></div> -->
+  <script>
+
+
+function sendBinaryData(){
+
+    for (var i=0; i< 6;i++){
+
+        idx=0;
+        for (var ii=0; ii< 9; ii++) {
+
+            var dataArray = new ArrayBuffer(61440); //61kb =  1분
+            var longInt32View = new Uint32Array(dataArray); //4Byte 짜리 숫자가 15360개 = 256*60 
+
+            for (var j=0; j< longInt32View.length; j++) {
+             
+                longInt32View[j] = dataRaw[i][idx].v;
+                idx++;
+
+            }
+           
+            url="http://localhost:8000/signals/3/"+dict[i]+"/"+ii.toString();
+            var xhr = new XMLHttpRequest;
+           
+            xhr.open("POST", url, false);
+            xhr.send(dataArray);
+            
+            console.log(i+"/"+ii+"!");
+        }
+    }
+
+
+}
+function recvBinaryData(){
+
+  var oReq = new XMLHttpRequest();
+  url="http://localhost:8000/signals_bin/3/"+dict[0];
+  oReq.open("GET", url, true);
+  oReq.responseType = "arraybuffer";
+
+  oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if (arrayBuffer) {
+      
+      var byteArray = new Uint32Array(arrayBuffer);
+      for (var i = 0; i < byteArray.byteLength; i++) {
+       //   console.log(byteArray[i]);
+      }
+    }
+  };
+
+  oReq.send(null);
+
+
+
+}
+    function selectChart(i){
+      alert("selectChart");
+      $("#chart"+i).css("height",180);
+      d3.select('#chart'+i).call(chart[i]);
+    }
+    dict=[];
+    dict[0]="PPG";
+    dict[1]="EEG1";
+    dict[2]="EEG2";
+    dict[3]="X";
+    dict[4]="Y";
+    dict[5]="Z";
+    chart=[];
+    data=[];
+    dataRaw=[];
+    xScale=[];
+    yScale=[];
+    xScaleCopy=[];
+    yScaleCopy=[];
+    gl=[];
+    
+    last_c_k=1;
+
+    function init2(idx){
+
+        data[idx]=[];  
+            dataRaw[idx]=[];
+
+            
+        var oReq = new XMLHttpRequest();
+        url="http://localhost:8000/signals_bin/3/"+dict[idx];
+        oReq.open("GET", url, true);
+        oReq.responseType = "arraybuffer";
+
+        oReq.onload = function (oEvent) {
+            var arrayBuffer = oReq.response; // Note: not oReq.responseText
+            if (arrayBuffer) {
+            
+            var byteArray = new Uint32Array(arrayBuffer);
+            for (var i = 0; i < byteArray.byteLength; i++) {
+        
+
+                dataRaw[idx][i]={"time":i,	"v":byteArray[i]}; 
+
+            }
+
+
+
+
+            const width = 1440;
+            const height = 100;
+
+    
+
+            data[idx] = dataRaw[idx].reduce((accumulator, current, index, srcArr) => {
+            /*             if (index % 10 == 0 ) {
+                sum=0;
+                for(i=0;i<10;i++)
+                {
+                    sum+=srcArr[index-i].v;
+                }
+                accumulator.push(parseInt(sum/10));
+                
+                } */
+            /*  if (index <3000) //1만개 씩 보여주는 것을 추천
+                accumulator.push(current); */
+            /* 
+                if (index % 256 ==1)
+                accumulator.push(current);  */
+
+                if (index % 26 ==1)
+                accumulator.push(current); 
+
+                return accumulator;
+            }, []);
+
+
+
+            //gl[idx] = document.getElementById("chart"+idx).querySelector('canvas').getContext('webgl');
+            //  gl[idx] = document.getElementById("chart"+idx).querySelector('canvas').getContext("2d");           
+
+            const pointSeries = fc
+                .seriesWebglLine()
+                .crossValue(d => d.time)
+                .mainValue(d => d.v)
+            //   .equals((prev, curr) => prev.length === curr.length)   
+            //  .decorate((program, x, idx) => fc.webglStrokeColor("red")(program))
+            .decorate((program, _, index) => {
+            fc.webglStrokeColor()
+                .value(() => {
+                    const { r, g, b, opacity } = d3.color("red");
+                    return [r / 255, g / 255, b / 255, 0.7];
+                })
+                .data(data[idx])(program);
+            });
+
+
+            const xExtent = fc
+                .extentLinear()
+                .accessors([d => d.time]);
+                //.pad([0.1, 0.1]);
+            const yExtent = fc.extentLinear().accessors([d => d.v]);
+
+
+
+                xScale[idx] = d3.scaleLinear().domain(xExtent(data[idx]));
+                xScaleCopy[idx] = xScale[idx].copy();
+                yScale[idx] = d3.scaleLinear().domain(yExtent(data[idx]));
+                yScaleCopy[idx] = yScale[idx].copy();
+
+                const zoom = d3
+                .zoom()
+                .extent([
+                    [0, 0],
+                    [width, height]
+                ])
+                .scaleExtent([1, 10000])
+                .translateExtent([
+                    [-Infinity, 0],
+                    [Infinity, height]
+                ])
+                .on('zoom', () => {
+
+
+                    const c_k=d3.event.transform.k;
+                    const c_x=d3.event.transform.x;
+                    last_c_k=c_k;
+
+
+
+
+
+
+                    sTime=parseInt(xScale[idx].invert(0));
+                    eTime=parseInt(xScale[idx].invert(xScaleCopy[idx].range()[1]));
+
+                var tArr,tArrDisplaying;
+                    for(i=0;i<chart.length;i++)
+                    {
+                        if(c_k>10)
+                        {
+                        const range=parseInt((eTime-sTime)/2);
+                        sidx=sTime-range;
+                        eidx=eTime+range;
+
+                        if(sidx<0)
+                            sidx=0;
+                        if(eidx>dataRaw[i].length-1)
+                            eidx=dataRaw[i].length-1;
+
+                
+                            sidx_Displaying=sTime;
+                            eidx_Displaying=eTime;
+                        if(sidx_Displaying<0)
+                            sidx_Displaying=0;
+                        if(eidx_Displaying>dataRaw[i].length-1)
+                            eidx_Displaying=dataRaw[i].length-1;
+
+                        tArrDisplaying=dataRaw[i].slice(sidx_Displaying,eidx_Displaying);
+
+                        tArr=dataRaw[i].slice(sidx,eidx);
+            /*                             tArr.unshift(dataRaw[i][0]);
+                        tArr.push(dataRaw[i][dataRaw.length-1]); */
+                        }
+                        else{
+                        tArrX=data[i];
+                        
+                        sidx=-1;
+                        eidx=tArrX.length-1;
+                        
+                        //sTime 을 현재 Data에 있는 값중 가장 가까운 index 값을 찾아서 붙여주어야 함.
+                        for(var j=0;j<tArrX.length;j++){
+                            if(tArrX[j].time>sTime&&sidx==-1)
+                            {
+                            sidx=j;
+                            }
+                            if(tArrX[j].time>eTime)
+                            {
+                            eidx=j;
+                            break;
+                            }
+                        }
+
+                        sidx_Displaying=sidx;
+                            eidx_Displaying=eidx;
+                        if(sidx_Displaying<0)
+                            sidx_Displaying=0;
+                        if(eidx_Displaying>tArrX.length-1)
+                            eidx_Displaying=tArrX.length-1;
+
+                        const range=parseInt((eidx-sidx)/2);
+                        sidx=sidx-range;
+                        eidx=eidx+range;
+
+
+                        if(sidx<0)
+                            sidx=0;
+                        if(eidx>tArrX.length-1)
+                            eidx=tArrX.length-1;
+
+
+                        tArr=tArrX.slice(sidx,eidx);
+
+
+
+                        tArrDisplaying=tArrX.slice(sidx_Displaying,eidx_Displaying);
+                        //  tArrDisplaying=data[i];
+
+                
+                        }
+
+
+                //    xScale[i]=d3.event.transform.rescaleX(xScale[i]);
+                    xScale[i].domain(d3.event.transform.rescaleX(xScaleCopy[i]).domain());
+                    //xScale[i] = d3.scaleLinear().domain(xExtent(tArr));
+            /*                         console.log("yScale["+i+"]");
+                        console.log(d3.min(tArr,function(c) { return c.v}));
+                        console.log(d3.max(tArr,function(c) { return c.v})); */
+                    yScale[i].domain([d3.min(tArrDisplaying,function(c) { return c.v}),d3.max(tArrDisplaying,function(c) { return c.v})]);
+
+                    
+                    //  yScale[i].domain(d3.event.transform.rescaleY(yScaleCopy[i]).domain()); 
+            /* 
+
+                        data[i]=dataRaw[i].slice(sidx,eidx);
+                        data[i].unshift(dataRaw[i][0]);
+                        data[i].push(dataRaw[i][dataRaw.length-1]);
+
+                        
+
+                    d3.select('#chart'+i).datum(data[i]);
+                    xScale[i] = d3.scaleLinear().domain(xExtent(tArr));
+                    yScale[i] = d3.scaleLinear().domain(yExtent(data[i]));
+
+            */
+
+            const series = fc
+                .seriesWebglLine()
+                .crossValue(d => d.time)
+                .mainValue(d => d.v)
+            .decorate((program, _, index) => {
+                fc.webglStrokeColor()
+                    .value(() => {
+                        const { r, g, b, opacity } = d3.color("red");
+                        return [r / 255, g / 255, b / 255, 0.7];
+                    })
+                    .data(tArr)(program);
+
+                    
+                });
+
+                chart[i].webglPlotArea(series);
+                
+
+                    d3.select('#chart'+i)
+                .datum(tArr)
+                .call(chart[i]); 
+                
+
+            
+
+            //           gl[i].clearRect(0,0,xScaleCopy[idx].range()[1],100);
+
+            
+                /*  gl[i].clearColor(0.4,1.0,1.0,1.0);
+                gl[i].clear( gl[i].COLOR_BUFFER_BIT); */
+
+
+
+            /*                          d3.select('#chart'+i+' d3fc-group').datum(tArr)
+                        .node() 
+                        .requestRedraw(); */
+
+                    }
+
+
+                });
+
+                
+                const decorate = (selection ) => {
+                
+                
+                // optionally: add some padding to fill the gap left by the x-axis
+
+                selection
+                    .enter()
+                    .select('#chart'+idx+' .plot-area')
+                    .on('measure.range', () => {
+
+                    xScaleCopy[idx].range([0, d3.event.detail.width]);
+                    yScaleCopy[idx].range([d3.event.detail.height, 0]);
+                    })
+                    .call(zoom);
+
+
+                    
+                };
+
+
+                if(idx==5)
+                {
+                chart[idx] = fc
+                .chartCartesian(xScale[idx], yScale[idx])
+                .webglPlotArea(pointSeries)
+                .yTicks(0)
+                .yTickFormat(d3.format('.3s'))
+                .decorate(decorate)
+                ;
+
+                }
+                else{
+                chart[idx] = fc
+                .chartCartesian(xScale[idx], yScale[idx])
+                .webglPlotArea(pointSeries)
+                .xTicks(0)
+                .yTicks(0)
+
+                .yTickFormat(d3.format('.3s'))
+                .decorate(decorate)
+                ;
+
+                }
+
+                
+            
+                d3.select('#chart'+idx)
+                .datum(data[idx])
+                .call(chart[idx])
+                
+                
+            
+            function type(d) {
+                d.time = Number(d.time);
+                d.v = Number(d.v);
+                return d;
+            }
+
+
+
+
+            }
+        };
+
+        oReq.send(null);
+
+        
+    }
+    function init(idx){
+
+        
+          $.ajax({
+          //  url: "http://localhost:8000/protocolExpSignal/all/243/"+dict[idx],
+            url: "http://localhost:8000/signals/3/"+dict[idx],
+            type: "GET",
+            cache:false,
+            timeout : 300000, 
+            headers: {
+                "Content-Type":"application/json;charset=UTF-8"
+            },
+       //     dataType:"text",
+       dataType:"text",
+
+            success: function(dataTxt){
+                
+               dataTxt=dataTxt.substring(1,dataTxt.length-1);
+
+              dataArr=dataTxt.split(",");
+             // idx=0;
+              
+         /*      data=dataRaw.map(function(obj){
+                var rObj = {};
+                rObj["time"] = idx++;
+                rObj["v"] = Number(obj);
+                return rObj;
+              });  */
+         
+              const width = 1440;
+              const height = 100;
+
+
+              data[idx]=[];  
+              dataRaw[idx]=[];
+              for(i=0;i<dataArr.length;i++)
+                dataRaw[idx][i]={"time":i,	"v":Number(dataArr[i])}; 
+                
+                console.log("data load end("+idx+"):"+Date.now());
+                data[idx] = dataRaw[idx].reduce((accumulator, current, index, srcArr) => {
+      /*             if (index % 10 == 0 ) {
+                    sum=0;
+                    for(i=0;i<10;i++)
+                    {
+                      sum+=srcArr[index-i].v;
+                    }
+                    accumulator.push(parseInt(sum/10));
+                   
+                  } */
+                 /*  if (index <3000) //1만개 씩 보여주는 것을 추천
+                  accumulator.push(current); */
+/* 
+                  if (index % 256 ==1)
+                  accumulator.push(current);  */
+
+                  if (index % 26 ==1)
+                  accumulator.push(current); 
+
+                  return accumulator;
+              }, []);
+              
+              
+              
+              //gl[idx] = document.getElementById("chart"+idx).querySelector('canvas').getContext('webgl');
+       //  gl[idx] = document.getElementById("chart"+idx).querySelector('canvas').getContext("2d");           
+
+                const pointSeries = fc
+                  .seriesWebglLine()
+                  .crossValue(d => d.time)
+                  .mainValue(d => d.v)
+               //   .equals((prev, curr) => prev.length === curr.length)   
+                //  .decorate((program, x, idx) => fc.webglStrokeColor("red")(program))
+                .decorate((program, _, index) => {
+                fc.webglStrokeColor()
+                  .value(() => {
+                      const { r, g, b, opacity } = d3.color("red");
+                      return [r / 255, g / 255, b / 255, 0.7];
+                  })
+                  .data(data[idx])(program);
+        });
+
+
+                const xExtent = fc
+                  .extentLinear()
+                  .accessors([d => d.time]);
+                  //.pad([0.1, 0.1]);
+                const yExtent = fc.extentLinear().accessors([d => d.v]);
+
+              
+            
+                  xScale[idx] = d3.scaleLinear().domain(xExtent(data[idx]));
+                  xScaleCopy[idx] = xScale[idx].copy();
+                  yScale[idx] = d3.scaleLinear().domain(yExtent(data[idx]));
+                  yScaleCopy[idx] = yScale[idx].copy();
+              
+                  const zoom = d3
+                    .zoom()
+                    .extent([
+                      [0, 0],
+                      [width, height]
+                    ])
+                    .scaleExtent([1, 10000])
+                    .translateExtent([
+                      [-Infinity, 0],
+                      [Infinity, height]
+                    ])
+                    .on('zoom', () => {
+
+
+                      const c_k=d3.event.transform.k;
+                      const c_x=d3.event.transform.x;
+                      last_c_k=c_k;
+   
+  
+
+
+
+
+                      sTime=parseInt(xScale[idx].invert(0));
+                      eTime=parseInt(xScale[idx].invert(xScaleCopy[idx].range()[1]));
+
+                    var tArr,tArrDisplaying;
+                      for(i=0;i<chart.length;i++)
+                      {
+                          if(c_k>10)
+                          {
+                            const range=parseInt((eTime-sTime)/2);
+                            sidx=sTime-range;
+                            eidx=eTime+range;
+
+                            if(sidx<0)
+                              sidx=0;
+                            if(eidx>dataRaw[i].length-1)
+                              eidx=dataRaw[i].length-1;
+
+                     
+                              sidx_Displaying=sTime;
+                              eidx_Displaying=eTime;
+                            if(sidx_Displaying<0)
+                              sidx_Displaying=0;
+                            if(eidx_Displaying>dataRaw[i].length-1)
+                              eidx_Displaying=dataRaw[i].length-1;
+
+                            tArrDisplaying=dataRaw[i].slice(sidx_Displaying,eidx_Displaying);
+         
+                            tArr=dataRaw[i].slice(sidx,eidx);
+/*                             tArr.unshift(dataRaw[i][0]);
+                            tArr.push(dataRaw[i][dataRaw.length-1]); */
+                          }
+                          else{
+                            tArrX=data[i];
+                            
+                            sidx=-1;
+                            eidx=tArrX.length-1;
+                           
+                            //sTime 을 현재 Data에 있는 값중 가장 가까운 index 값을 찾아서 붙여주어야 함.
+                            for(var j=0;j<tArrX.length;j++){
+                              if(tArrX[j].time>sTime&&sidx==-1)
+                              {
+                                sidx=j;
+                              }
+                              if(tArrX[j].time>eTime)
+                              {
+                                eidx=j;
+                                break;
+                              }
+                            }
+
+                            sidx_Displaying=sidx;
+                              eidx_Displaying=eidx;
+                            if(sidx_Displaying<0)
+                              sidx_Displaying=0;
+                            if(eidx_Displaying>tArrX.length-1)
+                              eidx_Displaying=tArrX.length-1;
+
+                            const range=parseInt((eidx-sidx)/2);
+                            sidx=sidx-range;
+                            eidx=eidx+range;
+
+
+                            if(sidx<0)
+                              sidx=0;
+                            if(eidx>tArrX.length-1)
+                              eidx=tArrX.length-1;
+            
+
+                            tArr=tArrX.slice(sidx,eidx);
+
+
+
+                            tArrDisplaying=tArrX.slice(sidx_Displaying,eidx_Displaying);
+                            //  tArrDisplaying=data[i];
+
+                    
+                          }
+
+
+                    //    xScale[i]=d3.event.transform.rescaleX(xScale[i]);
+                        xScale[i].domain(d3.event.transform.rescaleX(xScaleCopy[i]).domain());
+                        //xScale[i] = d3.scaleLinear().domain(xExtent(tArr));
+/*                         console.log("yScale["+i+"]");
+                          console.log(d3.min(tArr,function(c) { return c.v}));
+                          console.log(d3.max(tArr,function(c) { return c.v})); */
+                         yScale[i].domain([d3.min(tArrDisplaying,function(c) { return c.v}),d3.max(tArrDisplaying,function(c) { return c.v})]);
+
+                      
+                         //  yScale[i].domain(d3.event.transform.rescaleY(yScaleCopy[i]).domain()); 
+/* 
+
+                           data[i]=dataRaw[i].slice(sidx,eidx);
+                          data[i].unshift(dataRaw[i][0]);
+                          data[i].push(dataRaw[i][dataRaw.length-1]);
+
+                          
+
+                        d3.select('#chart'+i).datum(data[i]);
+                        xScale[i] = d3.scaleLinear().domain(xExtent(tArr));
+                        yScale[i] = d3.scaleLinear().domain(yExtent(data[i]));
+
+ */
+
+                 const series = fc
+                  .seriesWebglLine()
+                  .crossValue(d => d.time)
+                  .mainValue(d => d.v)
+                .decorate((program, _, index) => {
+                    fc.webglStrokeColor()
+                      .value(() => {
+                          const { r, g, b, opacity } = d3.color("red");
+                          return [r / 255, g / 255, b / 255, 0.7];
+                      })
+                      .data(tArr)(program);
+
+                      
+                    });
+
+                    chart[i].webglPlotArea(series);
+                   
+
+                      d3.select('#chart'+i)
+                    .datum(tArr)
+                    .call(chart[i]); 
+                     
+
+                 
+
+         //           gl[i].clearRect(0,0,xScaleCopy[idx].range()[1],100);
+
+               
+                   /*  gl[i].clearColor(0.4,1.0,1.0,1.0);
+                    gl[i].clear( gl[i].COLOR_BUFFER_BIT); */
+
+
+
+/*                          d3.select('#chart'+i+' d3fc-group').datum(tArr)
+                          .node() 
+                          .requestRedraw(); */
+ 
+                      }
+
+
+                    });
+              
+                    
+                  const decorate = (selection ) => {
+                  
+                    
+                    // optionally: add some padding to fill the gap left by the x-axis
+
+                    selection
+                      .enter()
+                      .select('#chart'+idx+' .plot-area')
+                      .on('measure.range', () => {
+       
+                        xScaleCopy[idx].range([0, d3.event.detail.width]);
+                        yScaleCopy[idx].range([d3.event.detail.height, 0]);
+                      })
+                      .call(zoom);
+
+
+                      
+                  };
+
+
+                  if(idx==5)
+                  {
+                    chart[idx] = fc
+                    .chartCartesian(xScale[idx], yScale[idx])
+                    .webglPlotArea(pointSeries)
+                   .yTicks(0)
+                    .yTickFormat(d3.format('.3s'))
+                    .decorate(decorate)
+                   ;
+
+                  }
+                  else{
+                    chart[idx] = fc
+                    .chartCartesian(xScale[idx], yScale[idx])
+                    .webglPlotArea(pointSeries)
+                   .xTicks(0)
+                   .yTicks(0)
+          
+                    .yTickFormat(d3.format('.3s'))
+                    .decorate(decorate)
+                   ;
+
+                  }
+
+                  
+               
+                  d3.select('#chart'+idx)
+                    .datum(data[idx])
+                    .call(chart[idx])
+                  
+                    
+                
+                function type(d) {
+                  d.time = Number(d.time);
+                  d.v = Number(d.v);
+                  return d;
+                }
+             
+                    
+            },
+            error:function(request,status,error){
+                console.log("code:"+request.status+"\n"+"error:"+error+"message:"+request.responseText+"\n");
+            }
+        });
+    }
+    let timerId;
+    function startTimer(){
+      timerId = setInterval(addNewData, 100);
+    }
+    function stopTimer(){
+      clearInterval(timerId);
+    }
+    function addNewData(){
+
+      //추가후에 우측 끝이 보이고 있으면 redraw 까지 진행
+
+
+      for(i=0;i<chart.length;i++)
+      {
+        k=0.9999;
+        if(dataRaw[i].length%2==1)
+            k=1.0001;
+        
+        v=dataRaw[i][dataRaw[i].length-1].v*k;
+        var t={"time":dataRaw[i].length,	"v":v}; 
+        dataRaw[i][dataRaw[i].length]=t;
+
+        
+          
+          
+        if(dataRaw[i].length % 26==1)
+        {
+              data[i][data[i].length] = t;
+              xScale[i].domain([xScale[i].domain()[0]+1,xScale[i].domain()[1]+1]);
+              xScaleCopy[i].domain([xScaleCopy[i].domain()[0],xScaleCopy[i].domain()[1]+1]);
+        }
+        else{
+          if(last_c_k>10){
+            xScale[i].domain([xScale[i].domain()[0]+1,xScale[i].domain()[1]+1]);
+            xScaleCopy[i].domain([xScaleCopy[i].domain()[0],xScaleCopy[i].domain()[1]+1]);
+
+              
+          }
+
+        }
+
+      }
+
+      if(dataRaw[0].length % 26==1)
+        {
+          
+              redrawChart();
+        }
+        else{
+          if(last_c_k>10){
+            redrawChart();
+          }
+
+        }
+                
+
+
+     
+    }
+    function redrawChart(){
+
+        sTime=parseInt(xScale[0].invert(0));
+        eTime=parseInt(xScale[0].invert(xScaleCopy[0].range()[1]));
+
+        
+        var tArr,tArrDisplaying;
+        for(i=0;i<chart.length;i++)
+        {
+            if(last_c_k>10){
+              const range=eTime-sTime;
+              sidx=sTime-range;
+              eidx=eTime+range;
+              if(sidx<0)
+                sidx=0;
+              if(eidx>dataRaw[i].length-1)
+                eidx=dataRaw[i].length-1;
+
+
+
+              sidx_Displaying=sTime;
+              eidx_Displaying=eTime;
+              if(sidx_Displaying<0)
+                sidx_Displaying=0;
+              if(eidx_Displaying>dataRaw[i].length-1)
+                eidx_Displaying=dataRaw[i].length-1;
+
+              tArrDisplaying=dataRaw[i].slice(sidx_Displaying,eidx_Displaying);
+
+
+
+              tArr=dataRaw[i].slice(sidx,eidx);
+/*               tArr.unshift(dataRaw[i][0]);
+              tArr.push(dataRaw[i][dataRaw.length-1]); */
+            }
+            else{
+              tArrX=data[i];
+                            
+              sidx=-1;
+              eidx=tArrX.length-1;
+              console.log("last_c_k/sTime~eTime:"+last_c_k+"/"+sTime+"~"+eTime);
+              //sTime 을 현재 Data에 있는 값중 가장 가까운 index 값을 찾아서 붙여주어야 함.
+              for(var j=0;j<tArrX.length;j++){
+                if(tArrX[j].time>sTime&&sidx==-1)
+                {
+                  sidx=j;
+                }
+                if(tArrX[j].time>eTime)
+                {
+                  eidx=j;
+                  break;
+                }
+              }
+              
+              sidx_Displaying=sidx;
+              eidx_Displaying=eidx;
+              if(sidx_Displaying<0)
+                sidx_Displaying=0;
+              if(eidx_Displaying>tArrX.length-1)
+                eidx_Displaying=tArrX.length-1;
+
+              const range=parseInt((eidx-sidx)/2);
+              sidx=sidx-range;
+              eidx=eidx+range;
+
+
+              if(sidx<0)
+                sidx=0;
+              if(eidx>tArrX.length-1)
+                eidx=tArrX.length-1;
+
+
+              tArr=tArrX.slice(sidx,eidx);
+
+
+
+              tArrDisplaying=tArrX.slice(sidx_Displaying,eidx_Displaying);
+
+            }
+            yScale[i].domain([d3.min(tArrDisplaying,function(c) { return c.v}),d3.max(tArrDisplaying,function(c) { return c.v})]);
+            const yExtent = fc.extentLinear().accessors([d => d.v]);
+            yScaleCopy[i]= d3.scaleLinear().domain(yExtent(data[i]));
+         
+
+          const series = fc
+          .seriesWebglLine()
+          .crossValue(d => d.time)
+          .mainValue(d => d.v)
+          .decorate((program, _, index) => {
+            fc.webglStrokeColor()
+              .value(() => {
+                  const { r, g, b, opacity } = d3.color("red");
+                  return [r / 255, g / 255, b / 255, 0.7];
+              })
+              .data(tArr)(program);
+          });
+
+          chart[i].webglPlotArea(series);
+        
+
+          d3.select('#chart'+i)
+          .datum(tArr)
+          .call(chart[i]); 
+    } 
+
+    }
+    console.log("start:"+Date.now());
+    init(0);
+    init(1);
+    init(2);
+    init(3);
+    init(4);
+    init(5);
+  /*   
+    init2(0);
+    init2(1);
+    init2(2);
+    init2(3);
+    init2(4);
+    init2(5);
+     */
+    function consolelog(txt){
+      thtml=$("#div_console").html();
+      thtml=thtml+"<br/>"+txt;
+      $("#div_console").html(thtml);
+    }
+
+  </script>
+</body>
+</html>

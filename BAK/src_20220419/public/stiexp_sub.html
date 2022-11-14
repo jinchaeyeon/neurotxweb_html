@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infusion Test Analyzer</title>
+    <meta name="description" content="Page Title" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- base css -->
+    <link
+      id="vendorsbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/vendors.bundle.css"
+    />
+    <link
+      id="appbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/app.bundle.css"
+    />
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="css/themes/cust-theme-4.css">
+    <link
+      id="myskin"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/skins/skin-master.css"
+    />
+    <link
+    id="myskin"
+    rel="stylesheet"
+    media="screen, print"
+    href="/css/custom.css"
+  />
+    <!-- Place favicon.ico in the root directory -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/img/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      const xt=new Date().getTime();
+      let s = document.createElement('script');
+      s.src = "/js/include.js?var" +xt;
+      s.type = 'text/javascript';
+      s.async = false;
+      s.defer=true;
+      let x = document.getElementsByTagName('script')[document.getElementsByTagName('script').length-1];
+      x.parentNode.insertBefore(s, x);
+    </script>
+
+
+  </head>
+
+  <body class="mod-skin-dark">
+  
+  <div class="page-wrapper">
+    <div class="page-inner">
+       
+        <aside class="page-sidebar"></aside>
+        <div class="page-content-wrapper">
+            <header class="page-header" role="banner"></header>
+            <main id="js-page-content" role="main" class="page-content">
+                <ol class="breadcrumb page-breadcrumb">
+                    <li class="breadcrumb-item"><a href="stiexp.html">프로토콜 리스트</a></li>
+                </ol>
+
+                <div class="subheader">
+                    <h2 class="subheader-title" id="proto_title">
+                      -
+                    </h2>
+                  </div>
+
+                  <div class="panel list">
+                    
+                    <div class="panel-container">
+                         <div class="panel-content poisition-relative">
+         
+
+
+<div class="row">
+  <div class="col-6"> 
+
+<!--     <div class="input-group">
+      <input type="text" class="form-control" placeholder="실험명으로 검색" aria-label="실험명으로 검색" aria-describedby="button-addon5" style="background:#fff">
+      <div class="input-group-append">
+          <button class="btn btn-primary waves-effect waves-themed" type="button" id="button-addon5"><i class="fal fa-search"></i></button>
+      </div>
+ 
+  </div>
+-->
+  
+  </div>
+  <div class="col-6" style="text-align:right">
+    <button type="button" class="btn btn-pills btn-primary waves-effect waves-themed" onclick="modifyProtocolExps(0)">실험 시작</button>
+  </div>
+</div>
+                
+
+
+                <div class="table-responsive">
+                <table id="listTable" class="table" style="min-width:1000px;margin-top:10px;">
+                        <colgroup>
+                            <col style="width:10%"/>
+                            <col style="width:6%"/>
+                            <col style="width:6%"/>
+                            <col style="width:11%"/>
+                            <col style="width:13%"/>
+                            <col style="width:17%"/>
+                            <col style="width:10%"/>
+                            <col style="width:5%"/>
+                            <col style="width:5%"/>
+                            <col style="width:27%"/>
+                        </colgroup>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>성별</th>
+                                <th>나이</th>
+                                <th>주진단명</th>
+                                <th>자극기기</th>
+                                <th>실험시간</th>
+                                <th>최대 자극세기</th>
+                                <th>설문조사</th>
+                                <th>동의서</th>
+                                <th>-</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="4">loading...</td>
+                       </tr>
+                     </tbody>
+                    </table>
+                </div>
+
+                <div class="frame-wrap" style="padding-top:10px">
+                    <nav aria-label="Page navigation">
+                      <ul id="pagination_listTable" class="pagination justify-content-center">
+                           
+                        </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+                
+
+
+        <div class="modal fade" id="modal_input_popup" tabindex="-1" role="dialog" aria-modal="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">피험자 정보입력</h5>
+                <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="panel list is-admin" style="padding:20px 10px">
+                  <div class="row" style="margin-bottom:10px;">
+                    <div class="col-4"><h5>이름</h5></div>
+                    <div class="col-8"><input type="text" id="name" name="name" class="form-control"></div>
+                </div>
+
+                <div class="row" style="margin-bottom:10px;">
+                <div class="col-4"><h5>성별</h5></div>
+                <div class="col-8"><select id="gender" name="gender" class="form-control"><option value="W">여성</option><option value="M">남성</option></select></div>
+            </div>
+
+            <div class="row" style="margin-bottom:10px;">
+              <div class="col-4"><h5>생년월일(8자리, ex.20090101)</h5></div>
+              <div class="col-8"><input type="text" id="birth" name="birth" class="form-control"></div>
+            </div>
+
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-4"><h5>주진단명</h5></div>
+                <div class="col-8"><input type="text" id="diagnosis" name="diagnosis" class="form-control"></div>
+              </div>
+
+   
+              <div class="row" style="margin-bottom:10px;">
+                <div class="col-4"><h5>특이사항</h5></div>
+                <div class="col-8"><textarea id="desc" name="desc" class="form-control"></textarea></div>
+              </div>
+        
+
+              <div class="row" style="margin-bottom:10px;">
+                <div class="col-4"><h5>설문조사 (구글링크)</h5></div>
+                <div class="col-8"><input type="text" id="survey_link" name="survey_link" class="form-control"></div>
+              </div>
+              
+              <div class="row" style="margin-bottom:10px;">
+                <div class="col-4"><h5>동의서 파일선택</h5></div>
+                <form method="POST" enctype="multipart/form-data" id="fileform">
+                  <div class="col-8"><input type="file" id="agree_filename" name="fileData" accept=".pdf" class="form-control">
+                  <div id="agree_filename_txt"></div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+              <div class="modal-footer">
+                       
+                  <button type="button" onclick="modifyProtocolExpsAction()" class="btn btn-primary waves-effect waves-themed" >다음 ></button> 
+                  <button type="button" class="btn modal-close btn-secondary waves-effect waves-themed" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+            </main>
+                      
+          <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> 
+          <footer class="page-footer" role="contentinfo">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendors.bundle.js"></script>
+    <script src="/js/app.bundle.js"></script>
+    <script>
+
+$(document).ready(function(){
+            $('input[type="file"]').change(function(){
+                $("#agree_filename_txt").text("uploading...");
+                const form_id='fileform';
+                uploadAPI("/upload/",form_id,function(data){
+                  alert("uploaded!");
+                  $("#agree_filename_txt").html('<a href="'+api_base_url+'/files/'+data.filename+'" target="_blank">'+data.filename+'</a>');
+                });
+
+            });
+        });
+        
+      window.onload = function(){
+        loadStructure();
+
+        
+    cur_url_param_arr=getLocation(location.href).search.split("&");
+        if(cur_url_param_arr.length>0)
+        {
+          nv=cur_url_param_arr[0].replace("?","").split("=");
+          if(nv[0]=="id")
+          {
+            protocol_id=nv[1];
+            
+          }
+        }
+       
+
+        if(protocol_id)
+        {
+            getAPI_sync("/protocols/"+protocol_id,{},"GET",function(data){
+                $("#proto_title").html(data.title);
+                
+            });
+
+        }
+
+        loadAndDisplayTable(1);
+      }
+      
+
+      
+
+      
+function updatePagesize(ps)
+{
+        curpagesize=ps;
+        loadAndDisplayTable(1);
+}
+
+function resetSearch()
+{
+        $("#search_searchKeyword").val('');
+        loadAndDisplayTable(1);
+}
+var pageNumber=1;
+var protocol_id;
+function loadAndDisplayTable(page)
+{
+    
+/*     if(!params)
+        params=last_params;
+ */
+
+    var search=null;
+    var searchParameter=null;
+
+    var orderParameter='dateTime';
+    var order='DESC';
+
+    startDateTime=null
+    endDateTime=null
+
+    pageNumber=page;
+    count=30;   //pagesize
+
+    search_searchKeyword=$("#search_searchKeyword").val();
+    if(search_searchKeyword!="")
+    {
+        search=search_searchKeyword;
+        searchParameter=$("#search_searchParameter").val();
+    }
+
+    
+//    obj={"search":search,"searchParameter":searchParameter,"orderParameter":orderParameter,"order":order,"pageNumber":pageNumber,"count":count};
+    //obj={"pageNumber":pageNumber,"count":count};
+    obj = {protocol_id:protocol_id};
+    getAPI2("/protocolExps/",obj,"GET",function(data){
+
+        thtml='';
+      if(data!=""){
+
+
+        pageStartIdx=0;
+        pageEndIdxPlus=data.length;
+        if(page>0)
+        {
+          pageStartIdx=count*(page-1);
+          pageEndIdxPlus=pageStartIdx+count;
+        }
+        if(pageEndIdxPlus>data.length)
+          pageEndIdxPlus=data.length;
+
+        for(i=pageStartIdx;i<pageEndIdxPlus;i++)
+        {
+            
+            var item=data[i];
+            link_txt="";
+            if(item.survey_link!="")
+                link_txt='<a href="'+item.survey_link+'" target="_blank">link</a>';
+
+            agreement_icon="";
+            if(item.agree_filename!="")
+                agreement_icon='<a href="'+api_base_url+'/files/'+item.agree_filename+'" target="_blank"><i class="fal fa-paperclip"></i></a>';
+
+                var sdiagnosis=item.diagnosis;
+            if(sdiagnosis.length>75)
+            sdiagnosis=sdiagnosis.substring(0,75)+"..";
+
+            thtml+='<tr>';
+//            thtml+='<td><input type="checkbox" name="key" value="'+item.deviceFactoryId+'"></td>';
+            thtml+='<td>'+item.name+'</td>';
+            thtml+='<td>'+(item.gender=="W"?"여성":"남성")+'</td>';
+            thtml+='<td>'+getAge(item.birth.substring(0,4))+'</td>';
+            thtml+='<td>'+sdiagnosis+'</td>';
+
+            thtml+='<td>'+item.deviceinfo+'</td>';
+            thtml+='<td>'+item.exp_duration+'</td>';
+            thtml+='<td>'+item.maxstimulus+'</td>';
+            thtml+='<td>'+link_txt+'</td>';
+            thtml+='<td>'+agreement_icon+'</td>';
+            
+            thtml+='<td><a href="stiexp_result.html?id='+item.id+'" class="btn btn-pills btn-primary waves-effect waves-themed">실험정보</a> ';
+            thtml+='<a href="javascript:modifyProtocolExps('+item.id+')" class="btn btn-pills btn-default waves-effect waves-themed" style="background:#393939">수정</a> ';
+            thtml+='<a href="javascript:removeItem('+item.id+')" class="btn btn-pills btn-default waves-effect waves-themed" style="background:#393939">삭제</a></td>';
+            thtml+='</tr>';
+        }
+      }else
+        {thtml='<tr><td colspan="10" class="text-center" style="padding:50px">No Items.</td></tr>';}
+
+
+        $("#listTable tbody").html(thtml);
+        var pagingHTML=getPagingHTML(page,count,data.length,"loadAndDisplayTable");
+        $("#pagination_listTable").html(pagingHTML);
+
+    });
+
+
+}
+
+function getAge(birthY) 
+{
+    var today = new Date();
+    var birthDate = new Date(birthY,1,1);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
+}
+//var cur_mode="modify";
+
+function  modifyProtocolExps(id)
+{
+  
+  cur_id=id;
+//  cur_mode="modify";
+
+if(id=="0")
+{
+         $("#name").val("");
+          $("#gender").val("W");
+          $("#birth").val("");
+          $("#diagnosis").val("");
+          $("#desc").val("");
+          $("#survey_link").val("");
+          $("#agree_filename").val("");
+          
+          $("#agree_filename_txt").html("");
+          $("#modal_input_popup").modal("show");
+
+}
+else{
+
+
+  getAPI2("/protocolExps/"+id+"/",{},"GET",function(data){
+        if(data)
+        {
+
+
+          $("#name").val(data.name);
+          $("#gender").val(data.gender);
+          $("#birth").val(data.birth);
+          $("#diagnosis").val(data.diagnosis);
+          $("#desc").val(data.desc);
+          $("#survey_link").val(data.survey_link);
+          $("#agree_filename").val("");
+          $("#agree_filename_txt").html('<a href="'+api_base_url+'/files/'+data.agree_filename+'" target="_blank">'+data.agree_filename+'</a>');
+          
+          
+
+          $("#modal_input_popup").modal("show");
+        }
+
+  });
+
+}
+ 
+
+}
+var cur_id=null;
+function modifyProtocolExpsAction()
+{
+  if($("#name").val()=="")
+  {
+    alert('피험자 이름을 입력해주세요.');
+    return;
+  }
+  if($("#survey_link").val()=="")
+  {
+    alert('설문조사 링크를 입력해주세요.');
+    return;
+  }
+  else{
+
+    if($("#survey_link").val().substring(0,7)!="http://"&&$("#survey_link").val().substring(0,8)!="https://")
+    {
+      alert('설문조사 링크는 url 형식을 따라야 합니다.');
+      return;
+    }  
+  }
+  var id=cur_id;
+  var obj={
+    "name": $("#name").val(),
+    "gender": $("#gender").val(),
+    "birth": $("#birth").val(),
+    "diagnosis": $("#diagnosis").val(),
+    "desc": $("#desc").val(),
+    "survey_link": $("#survey_link").val(),
+    "agree_filename":$("#agree_filename_txt").text()
+  };
+
+  $("#modal_input_popup").modal("hide");
+  obj.proto_id=protocol_id;
+
+  if(cur_id!=0)
+  {
+    obj.id=cur_id;
+    patchAPI("/protocolExps/",obj,function(data){
+      alert("Changed!");
+      loadAndDisplayTable(pageNumber);
+    });
+  }
+  else{
+    postAPI("/protocolExps/",obj,function(data){
+      alert("Added!");
+     window.location="stiexp_signal.html?id="+data.id;
+    });
+
+  }
+}
+function removeItem(code)
+{
+     if(confirm("정말 삭제하시겠습니까?"))
+     {
+        obj=null;
+        deleteAPI("/protocolExps/"+code,"",function(data){
+                alert("deleted!");
+                loadAndDisplayTable(pageNumber);
+        });
+     }
+}
+    </script>
+  </body>
+</html>

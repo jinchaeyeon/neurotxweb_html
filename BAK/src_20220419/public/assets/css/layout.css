@@ -1,0 +1,87 @@
+html, body {
+    height: 100%;
+}
+#wrapper {
+    height: 100%;
+}
+
+.subheader + form .panel.list {
+    position: relative;
+    min-height: 690px;
+}
+.subheader + form .panel.list .panel-container {
+    position: static;
+    height: calc(100% - 48px);
+    padding-bottom: 32px;
+}
+.subheader + form .panel .spinner-grow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.panel-hdr .util {
+    flex: 8;
+    margin: 0;
+    display: flex;
+    padding-right: 10px;
+    align-items:center;
+    color: inherit;
+    color: #333;
+    position: relative;
+    font-weight: 500;
+}
+.panel-hdr .search-input {}
+
+.util .input-group {
+    margin-left: 10px;
+}
+.util .input-group:first-child {
+    margin-left: 0;
+}
+
+.page-footer {}
+.page-footer .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+}
+.page-footer .container .copyright {
+    color: #aaa;
+    font-size: .85em;
+}
+.page-footer .container .ver {
+    font-size: .85em;
+}
+
+.panel .admin {
+    visibility: hidden;
+}
+.panel.is-admin {}
+.panel.is-admin .admin {
+    visibility: visible;
+}
+.panel .item-info .badge {
+    margin-left: 10px;
+}
+.panel .item-info .badge:first-child {
+    margin-left: 0;
+}
+
+.panel .panel-toolbar > a,
+.panel .panel-toolbar > button {
+    margin-left: 10px;
+}
+.panel .panel-toolbar > *:first-child {
+    margin-left: 0;
+}
+.panel .panel-toolbar > .deleteHandle {
+    display: none;
+}
+
+.page-sidebar {}
+.page-sidebar .location {
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+}

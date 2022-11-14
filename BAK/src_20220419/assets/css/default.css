@@ -1,0 +1,112 @@
+
+/* TITLE */
+.h2-primary {
+  font-size: 1em;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #c1c1c1;
+  font-size: 1.3em;
+  text-align: left;
+  font-weight: 500;
+  letter-spacing: normal;
+}
+.h3-primary {
+  margin: 20px 0 10px;
+  color: #3a3d40;
+  font-size: 14px;
+  font-weight: normal;
+  text-align-last: left;
+  line-height: 1.5;
+}
+
+/* INPUT */
+.input-normal {
+  box-sizing: border-box;
+}
+.input-group {}
+.input-group .spinner-border {
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  margin-top: -0.5rem;
+}
+
+/* BUTTON */
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+.btn.min {
+  min-width: 80px;
+}
+
+/* PAGINATION */
+.pagination {}
+.pagination {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.pagination .page-item[aria-current="page"] {
+  cursor: pointer;
+}
+
+/* TABLE */
+.table th,
+.table td {
+  box-sizing: border-box;
+}
+.table td {
+  padding: 0.73rem;
+}
+.table td a.subject {
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* TEXT STYLE */
+i.valid {
+  color: #c61b13;
+  font-family: Arial;
+  font-size: 14px;
+}
+
+/* CHECKBOX */
+.chk-primary {}
+.chk-primary input {
+  vertical-align: middle;
+}
+.chk-primary i {
+  display: none;
+}
+
+/* LAYOUT */
+.transform-center {
+  transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+
+/* BTN-BOX */
+.btn-box {}
+.btn-box a,
+.btn-box button {
+  margin: 0 5px;
+}
+.btn-box button:last-child {
+  margin-left: 0;
+}
+
+
+/* ALIGN */
+.alignR {text-align: right;}
+.alignC {text-align: center;}
+.alignL {text-align: left;}

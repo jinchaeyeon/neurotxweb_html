@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infusion Test Analyzer</title>
+    <meta name="description" content="Page Title" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="/js/realtime_chart.js"></script>
+      <script src="/js/overview_chart.js"></script>
+    <!-- base css -->
+    <link
+      id="vendorsbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/vendors.bundle.css"
+    />
+    <link
+      id="appbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/app.bundle.css"
+    />
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="css/themes/cust-theme-4.css">
+    <link
+      id="myskin"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/skins/skin-master.css"
+    />
+    <link
+    id="myskin"
+    rel="stylesheet"
+    media="screen, print"
+    href="/css/custom.css"
+  />
+    <!-- Place favicon.ico in the root directory -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/img/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      const xt=new Date().getTime();
+      let s = document.createElement('script');
+      s.src = "/js/include.js?var" +xt;
+      s.type = 'text/javascript';
+      s.async = false;
+      s.defer=true;
+      let x = document.getElementsByTagName('script')[document.getElementsByTagName('script').length-1];
+      x.parentNode.insertBefore(s, x);
+    </script>
+
+
+  </head>
+
+  <body class="mod-skin-dark">
+  
+  <div class="page-wrapper">
+    <div class="page-inner">
+       
+        <aside class="page-sidebar"></aside>
+        <div class="page-content-wrapper">
+            <header class="page-header" role="banner"></header>
+            <main id="js-page-content" role="main" class="page-content">
+                <div class="subheader">
+                    <h2 class="subheader-title">
+                      <i class="subheader-icon fal fa-circle"></i> Experiment
+                    </h2>
+                  </div>
+
+                  <div class="panel list">
+                    
+                    <div class="panel-container">
+                         <div class="panel-content poisition-relative">
+         
+
+
+
+<button class="btn btn-default" onclick="connectDevice()">Connect</button>
+
+
+
+<div id="chartlist">
+
+
+</div>
+
+
+                <div class="table-responsive">
+                <table id="listTable" class="table" style="margin-top:10px;">
+                        <colgroup>
+                            <col style="width:10%"/>
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>
+                            <col style="width:10%"/>
+                            <col style="width:20%;"/>
+                            <col style="width:20%;"/>
+                        </colgroup>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Serial</th>
+                                <th>Patient Name</th>
+                                <th>Start Time</th>
+                  
+                                <th>Duration</th>
+                                <th>Raw Signals</th>
+                                <th> - </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="6">loading...</td>
+                       </tr>
+                     </tbody>
+                    </table>
+                </div>
+
+                <div class="frame-wrap" style="padding-top:10px">
+                    <nav aria-label="Page navigation">
+                      <ul id="pagination_listTable" class="pagination justify-content-center">
+                           
+                        </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+                
+
+
+        <div class="modal fade" id="modal_input_popup" tabindex="-1" role="dialog" aria-modal="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">input parameters</h5>
+                <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="panel list is-admin" style="padding:20px 10px">
+                  <div class="row">
+                    <div class="col-6"><h5>Name</h5></div>
+                    <div class="col-6"><input type="text" id="name" name="name"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-6"><h5>Gender</h5></div>
+                  <div class="col-6"><select id="gender" name="gender"><option Value="W">Woman</option><option Value="M">Men</option></select></div>
+              </div>
+
+              <div class="row">
+                <div class="col-6"><h5>Age</h5></div>
+                <div class="col-6"><input type="number" id="age" name="age"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-6"><h5>Weight</h5></div>
+              <div class="col-6"><input type="number" id="weight" name="weight"></div>
+          </div>
+          <div class="row">
+            <div class="col-6"><h5>Height</h5></div>
+            <div class="col-6"><input type="number" id="height" name="height"></div>
+        </div>
+        <div class="row">
+          <div class="col-6"><h5>질환명</h5></div>
+          <div class="col-6"><input type="text" id="patient_object" name="patient_object"></div>
+      </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                       
+                  <button type="button" onclick="modifyPatientAction()" class="btn btn-primary waves-effect waves-themed" >Save</button> 
+                  <button type="button" class="btn modal-close btn-secondary waves-effect waves-themed" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+            </main>
+                      
+          <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> 
+          <footer class="page-footer" role="contentinfo">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendors.bundle.js"></script>
+    <script src="/js/app.bundle.js"></script>
+
+  <script>
+
+
+const ADDITIONAL_GRAPH_WIDTH_SEC_DEFAULT=60;
+const GRAPH_WIDTH_SEC_DEFAULT=30;
+
+var  max_time_width_sec=60*30; //최대 저장시간 30분
+var graph_width_sec=[];
+
+
+var update_timer,upload_timer;
+var lineArr = [];
+var lineArr_display = [];
+var signal_frequency_list=[];
+
+var MAX_LENGTH = 100;
+var duration = 500;
+var chart=[] ;
+var raw_signals=[];
+var chartCnt=0;
+const signal_names=["EEG1","EEG2","PPG","X","Y","Z"]
+function init(){
+
+  
+var thtml="";
+
+  for(i=0;i<6;i++)
+  {
+
+      chart[i]=getRealTimeChart();
+      lineArr[i]=[];
+      graph_width_sec[i]=GRAPH_WIDTH_SEC_DEFAULT;
+      lineArr_display[i]=[];
+      signal_frequency_list[i]=250;
+      
+      thtml+='<div id="additional_chart_container_'+signal_names[i]+'" class="additional_chart_container">';
+      thtml+='<div style="text-align:right"><select name="graph_width" id="graph_width" onchange="graph_width_change('+i+',this.value)"><option value="5">5SEC</option><option value="10" selected>10SEC</option><option value="30">30SEC</option><option value="60">1 min</option><option value="300">5 min</option></select></div>';
+      thtml+="<h2>"+signal_names[i]+"</h2>";
+      thtml+='<div id="chart'+i.toString()+'"></div>';
+      thtml+="<hr/></div>";
+
+
+  }
+  $("#chartlist").html(thtml);
+  update_timer=window.setInterval(updateData, 500);
+}
+
+function updateData() {
+         
+          
+         for(i=0;i<chart.length;i++)
+         {
+
+             if(lineArr[i].length>0)
+             {
+               var spoint=lineArr[i].length-1-graph_width_sec[i]*signal_frequency_list[i];
+               if(spoint<0)
+                 spoint=0;
+
+               lineArr_display[i]=lineArr[i].slice(spoint,lineArr[i].length-1);            
+
+               d3.select("#chart"+i).datum(lineArr_display[i]).call(chart[i]);
+             }
+
+         
+         }
+       }
+
+
+function graph_width_change(idx,tw)
+{
+  graph_width_sec[idx]=tw;
+
+
+}
+function onDataRecv(t,eeg1,eeg2,ppg,x,y,z){
+  var tt=new Date();
+  tt.setTime(t);
+
+  //console.log(tt);
+  //tt.setMilliseconds(tt.getMilliseconds()+parseInt(j*1000/signal_frequency_list[i]));
+  var lineData=[];
+  lineData[0] = {time: tt,x: eeg1,m:''};
+  lineData[1] = {time: tt,x: eeg2,m:''};
+  lineData[2] = {time: tt,x: ppg,m:''};
+  lineData[3] = {time: tt,x: x,m:''};
+  lineData[4] = {time: tt,x: y,m:''};
+  lineData[5] = {time: tt,x: z,m:''};
+  
+  for(var i=0;i<6;i++)
+  {
+    lineArr[i].push(lineData[i]);
+  if (lineArr[i].length > max_time_width_sec*signal_frequency_list[i]) {
+    lineArr[i].shift();
+  }
+
+  }
+
+}
+var noise_data_ICP=[];
+var noise_data_ABP=[];
+
+  </script>
+
+
+    <script>
+      const    CURRENT_SERVICE_UUID="6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+      const NOTIFY_UUID="6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+      const WRITE_UUID="6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+      function anyDeviceFilter() {
+          // This is the closest we can get for now to get all devices.
+          // https://github.com/WebBluetoothCG/web-bluetooth/issues/234
+          return Array.from('nN')
+              .map(c => ({namePrefix: c}))
+              .concat({name: ''});
+        }
+let options = {
+      //acceptAllDevices: true,
+      filters: [{services:[CURRENT_SERVICE_UUID]}],
+       //       filters: anyDeviceFilter(),
+              optionalServices: ['generic_access']
+            
+}
+
+
+
+      window.onload = function(){
+        loadStructure();
+
+        
+
+
+
+
+        loadAndDisplayTable(1);
+      }
+     
+
+      function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint16Array(buf));
+}
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+  var bufView = new Uint16Array(buf);
+  for (var i=0, strLen=str.length; i < strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
+function getUint24(bytes,idx) {     
+    var newInt = (  
+     ((bytes.getUint8(0+idx)) *64) +  
+     (( bytes.getUint8(1+idx)) *8) +  
+     ( bytes.getUint8(2+idx))  
+    );  
+
+    if ((newInt & 0x00800000) > 0) {
+      newInt |= 0xFF000000;
+					} else {
+						newInt &= 0x00FFFFFF;
+					}
+    
+    return newInt;  
+}  
+
+function getUint16(bytes,idx) {     
+    var newInt = (  
+     (( bytes.getUint8(0+idx)) *8) +  
+     ( bytes.getUint8(1+idx))  
+    );  
+
+    if ((newInt & 0x00800000) > 0) {
+      newInt |= 0xFF000000;
+					} else {
+						newInt &= 0x00FFFFFF;
+					}
+    
+    return newInt;  
+}  
+var pt;
+function connectDevice(){
+
+
+
+  
+    navigator.bluetooth.requestDevice(options).then(function(device) {
+    console.log('Name: ' + device.name);
+    console.log('Connecting to GATT Server...');
+    // Do something with the device.
+    wbdevice = device;
+    return wbdevice.gatt.connect()
+                .then(function (server) {
+
+                  init();
+
+
+                  console.log("server");console.log(server);
+                    // Getting primary service from device with passed uuid
+                    return server.getPrimaryService(CURRENT_SERVICE_UUID)
+                        .then(function (service) {
+                          console.log("service");console.log(service);
+                            // Getting characteristic from service with passed uuid
+                            service.getCharacteristic(WRITE_UUID).then(function (characteristic) {
+                              console.log("characteristic1");console.log(characteristic);
+                              deviceChar = characteristic;
+                              const cmd="910|2";
+                              var uint8array = new TextEncoder().encode(cmd);
+
+                              //deviceChar.writeValueWithResponse(str2ab(cmd)).then(function() { 
+                                deviceChar.writeValueWithoutResponse(uint8array).then(function() { 
+                                
+                                console.log("wrote!!!!!!");
+                              /*   deviceChar.readValue().then(function(dataView) { 
+                                  console.log(ab2str(dataView));
+
+                                 }); */
+                                
+                              })
+                            });
+                            
+                            return service.getCharacteristic(NOTIFY_UUID)
+                                .then(function (characteristic) {
+                                  console.log("characteristic2");console.log(characteristic);
+
+                                    // Storing in global variable
+                                    deviceChar = characteristic;
+                                    // Starting notifications on characteristic
+                                    return characteristic.startNotifications()
+                                        .then(function () {
+                                          console.log("startNotifications");
+                                            // Listening for event
+                                            characteristic.addEventListener('characteristicvaluechanged', function (event) {
+                                           //   console.log("characteristicvaluechanged");
+                                             
+                                              
+                                              var xxx=new Date();
+                                              ct=xxx.getTime();
+                                              
+                                                if(pt)
+                                                {
+                                                    DATA=[];
+                                                    DATA[0]=event.target.value.buffer.slice(0,33-1);
+                                                    DATA[1]=event.target.value.buffer.slice(33,66-1);
+                                                    DATA[2]=event.target.value.buffer.slice(66,99-1);
+                                                    DATA[3]=event.target.value.buffer.slice(99,132-1);
+                                                    DATA[4]=event.target.value.buffer.slice(132,165-1);
+                                                    var time_span=(ct-pt)/5;
+
+                                                    for(i=0;i<DATA.length;i++)
+                                                    {
+                                                      var t=pt+time_span*i;
+                                                   
+                                                      var td=new DataView(DATA[i]);
+
+                                                      
+                                                      let u8arr = new Uint8Array([td.getUint8(0), td.getUint8(1), td.getUint8(2), td.getUint8(3),td.getUint8(4),td.getUint8(5),td.getUint8(6),td.getUint8(7),td.getUint8(8),td.getUint8(9),td.getUint8(10),td.getUint8(11),td.getUint8(12),td.getUint8(13),td.getUint8(14),td.getUint8(15),td.getUint8(16),td.getUint8(17),td.getUint8(18),td.getUint8(19),td.getUint8(20),td.getUint8(21),td.getUint8(22),td.getUint8(23),td.getUint8(24),td.getUint8(25),td.getUint8(26),td.getUint8(27),td.getUint8(28),td.getUint8(29),td.getUint8(30),td.getUint8(31)]);
+
+                                                      B1=td.getUint8(0);
+                                                      B2_SAMPLENUM=td.getUint8(1);
+                                                      
+
+   
+      //                                                 B3_5_EEG1=(td.getUint8(2)<< 16) +(td.getUint8(3)<< 8) + td.getInt8(4);
+                                                      //B3_5_EEG1=getUint24(td,2);
+                                                      B3_5_EEG1=getUint24(td,2);
+                                                      //B6_8_EEG2=(td.getUint8(5)<< 16) +(td.getUint8(6)<< 8) + td.getUint8(7);
+                                                      //B9_11_PPG=(td.getUint8(8)<< 16) +(td.getUint8(9)<< 8) + td.getUint8(10);
+                                                      B6_8_EEG2=getUint24(td,5);
+                                                      B9_11_PPG=getUint24(td,8);
+
+                                                      B27_28_X=td.getUint16(26);
+                                                      B29_30_Y=td.getUint16(28);
+                                                      B31_32_Z=td.getUint16(30);
+
+                                                   
+                                                    
+                                 
+                                                      
+                                                      console.log(u8arr);
+                                                    
+                                                      //B27_28_X=getUint16(td,26);
+                                                      //B29_30_Y=getUint16(td,28);
+                                                      //B31_32_Z=getUint16(td,30);
+                                                        /* 
+                                                      console.log("------------------"); 
+                                                      console.log((td.getInt8(2)));
+                                                      console.log((td.getInt8(2)<< 16));
+                                                      console.log("------------------"); 
+                                                      console.log((td.getUint8(3)));
+                                                      console.log((td.getUint8(3)<< 8));
+                                                      console.log("------------------"); 
+                                                      console.log(td.getUint8(4));
+                                                      console.log("B3_5_EEG1"); 
+                                                      console.log(B3_5_EEG1);
+                                                      console.log("------------------"); 
+      */
+                                                      // console.log(B2_SAMPLENUM+":"+B3_5_EEG1+","+B6_8_EEG2+","+B9_11_PPG+"|"+B27_28_X+"-"+B29_30_Y+"-"+B31_32_Z); 
+                                                      onDataRecv(t, B3_5_EEG1,B6_8_EEG2,B9_11_PPG,B27_28_X,B29_30_Y,B31_32_Z);
+
+                                                    
+                                                  }
+                                                 
+                                                }
+                                                pt=ct;
+
+                                                
+
+                                                
+
+                                               // var readoutValue = parseCharacteristicValue(readoutBuffer);
+                                              //  console.log(readoutValue);
+                                            });
+                                        });
+                                })
+                        })
+                 })
+            // Error handling
+           
+  })
+  .catch(function(error) {
+    console.log("Something went wrong. " + error);
+  });
+
+/*   navigator.bluetooth.requestDevice(options)
+        .then(function(device) {
+            console.log('> Found ' + device.name);
+            console.log('Connecting to GATT Server...');
+            wbdevice = device;
+            // Connecting on device
+            return wbdevice.gatt.connect()
+                .then(function (server) {
+                    // Getting primary service from device with passed uuid
+                    return server.getPrimaryService(CURRENT_SERVICE_UUID)
+                        .then(function (service) {
+                            // Getting characteristic from service with passed uuid
+                            return service.getCharacteristic(CURRENT_UUID)
+                                .then(function (characteristic) {
+                                    // Storing in global variable
+                                    deviceChar = characteristic;
+                                    // Starting notifications on characteristic
+                                    return characteristic.startNotifications()
+                                        .then(function () {
+                                            // Listening for event
+                                            characteristic.addEventListener('characteristicvaluechanged', function (event) {
+                                                var readoutBuffer = event.target.value.buffer;
+                                                // Parsing readout data
+                                                var readoutValue = parseCharacteristicValue(readoutBuffer);
+                                                console.log(readoutValue);
+                                            });
+                                        });
+                                })
+                        })
+                 })
+            // Error handling
+            }).catch(onError);
+              */
+}
+     
+      
+function updatePagesize(ps)
+{
+        curpagesize=ps;
+        loadAndDisplayTable(1);
+}
+
+function resetSearch()
+{
+        $("#search_searchKeyword").val('');
+        loadAndDisplayTable(1);
+}
+var pageNumber=1;
+function loadAndDisplayTable(page)
+{
+    
+/*     if(!params)
+        params=last_params;
+ */
+
+    var search=null;
+    var searchParameter=null;
+
+    var orderParameter='dateTime';
+    var order='DESC';
+
+    startDateTime=null
+    endDateTime=null
+
+    pageNumber=page;
+    count=30;   //pagesize
+
+    search_searchKeyword=$("#search_searchKeyword").val();
+    if(search_searchKeyword!="")
+    {
+        search=search_searchKeyword;
+        searchParameter=$("#search_searchParameter").val();
+    }
+
+
+    obj={"search":search,"searchParameter":searchParameter,"orderParameter":orderParameter,"order":order,"pageNumber":pageNumber,"count":count};
+    //obj={"pageNumber":pageNumber,"count":count};
+    //obj = Object.assign(params,obj);
+    getAPI2("/experiments/",obj,"GET",function(data){
+
+        thtml='';
+      if(data){
+
+
+        pageStartIdx=0;
+        pageEndIdxPlus=data.length;
+        if(page>0)
+        {
+          pageStartIdx=count*(page-1);
+          pageEndIdxPlus=pageStartIdx+count;
+        }
+        if(pageEndIdxPlus>data.length)
+          pageEndIdxPlus=data.length;
+
+        for(i=pageStartIdx;i<pageEndIdxPlus;i++)
+        {
+            
+            var item=data[i];
+            thtml+='<tr>';
+//            thtml+='<td><input type="checkbox" name="key" value="'+item.deviceFactoryId+'"></td>';
+            thtml+='<td>'+item.id+'</td>';
+            thtml+='<td>'+item.patient.name+'</td>';
+            thtml+='<td>'+item.start_time+'</td>';
+            thtml+='<td>'+item.duration+'</td>';
+            thtml+='<td>'+item.signal_codes+'</td>';
+            
+            
+            thtml+='<td><a href="javascript:showDetail('+item.id+')" class="btn btn-default btn-pills waves-effect waves-themed">Detail</a> ';
+            thtml+='<a href="javascript:removeItem('+item.id+')"  style="background:#393939" class="btn btn-default btn-pills waves-effect waves-themed">Delete</a></td>';
+            thtml+='</tr>';
+        }
+      }else
+        {thtml='<tr><td colspan="6" class="text-center">No Items.</td></tr>';}
+
+
+        $("#listTable tbody").html(thtml);
+        var pagingHTML=getPagingHTML(page,count,data.length,"loadAndDisplayTable");
+        $("#pagination_listTable").html(pagingHTML);
+
+    });
+
+
+}
+
+
+//var cur_mode="modify";
+
+function  showDetail(id)
+{
+  
+ window.location="signals.html?id="+id;
+
+}
+var cur_id=null;
+
+function removeItem(code)
+{
+    
+     
+  obj={"id":code};
+      
+      getAPI2("/experiments/"+code+"/",obj,"DELETE",function(data){
+              alert("deleted!");
+              loadAndDisplayTable(pageNumber);
+      });
+  
+
+    
+    
+    
+}
+    </script>
+  </body>
+</html>

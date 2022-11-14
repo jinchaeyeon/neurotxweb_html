@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infusion Test Analyzer</title>
+    <meta name="description" content="Page Title" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- base css -->
+    <link
+      id="vendorsbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/vendors.bundle.css"
+    />
+    <link
+      id="appbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/app.bundle.css"
+    />
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="css/themes/cust-theme-4.css">
+    <link
+      id="myskin"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/skins/skin-master.css"
+    />
+    <link
+    id="myskin"
+    rel="stylesheet"
+    media="screen, print"
+    href="/css/custom.css"
+  />
+    <!-- Place favicon.ico in the root directory -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/img/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      const xt=new Date().getTime();
+      let s = document.createElement('script');
+      s.src = "/js/include.js?var" +xt;
+      s.type = 'text/javascript';
+      s.async = false;
+      s.defer=true;
+      let x = document.getElementsByTagName('script')[document.getElementsByTagName('script').length-1];
+      x.parentNode.insertBefore(s, x);
+    </script>
+
+
+  </head>
+
+  <body class="mod-skin-dark">
+  
+  <div class="page-wrapper">
+    <div class="page-inner">
+       
+        <aside class="page-sidebar"></aside>
+        <div class="page-content-wrapper">
+            <header class="page-header" role="banner"></header>
+            <main id="js-page-content" role="main" class="page-content">
+                <div class="subheader">
+                    <h2 class="subheader-title">
+                      <i class="fal fa-chart-line"></i> 프로토콜 관리
+                    </h2>
+                  </div>
+
+                  <div class="panel list">
+                    
+                    <div class="panel-container">
+                         <div class="panel-content poisition-relative">
+         
+
+
+<!--
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-lg-6 col-sm-6">
+                        <a href="deviceAdd.html" type="button" class="btn btn-sm btn-default waves-effect waves-themed"> <i class="fal fa-plus"></i> 등록</a>
+                    </div>
+                    <div class="col-lg-6 col-sm-6">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <select class="form-control" name="searchParameter" id="search_searchParameter">
+                                    <option value="serialNumber">시리얼번호</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-sm-5">
+                                <input type="text"   id="search_searchKeyword"  name="searchKeyword" class="form-control  rounded-0" placeholder="검색어">
+                            </div>
+                            <div class="col-lg-3 col-sm-4">
+                                <button type="button" class="btn btn-primary waves-effect waves-themed" onclick="loadAndDisplayTable(1)">검색</button>
+                                 <button type="button" class="btn  btn-secondary waves-effect waves-themed" onclick="resetSearch()">초기화</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+-->
+
+<div class="row">
+  <div class="col-6">
+    <div class="input-group">
+      <input type="text" id="search_searchKeyword" class="form-control" placeholder="실험명으로 검색" aria-label="실험명으로 검색" aria-describedby="button-addon5" style="background:#fff;color:#000">
+      <div class="input-group-append">
+          <button onclick="search_protocol()" class="btn btn-primary waves-effect waves-themed" type="button" id="button-addon5"><i class="fal fa-search"></i></button>
+      </div>
+  </div>
+
+  
+  </div>
+  <div class="col-6" style="text-align:right">
+    <button type="button" class="btn btn-pills btn-primary waves-effect waves-themed" onclick="modifyProtocol(0)">프로토콜 추가</button>
+  </div>
+</div>
+                
+
+
+                <div class="table-responsive">
+                <table id="listTable" class="table " style="min-width:1000px;margin-top:10px;">
+                        <colgroup>
+                            <col style="width:10%"/>
+                            <col style="width:25%"/>
+                            <col style="width:35%"/>
+                            <col style="width:10%"/>
+                            <col style="width:20%"/>
+                        </colgroup>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>번호</th>
+                                <th>실험 프로토콜명</th>
+                                <th>상세설명</th>
+                                <th>담당자</th>
+                                <th>-</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="4">loading...</td>
+                       </tr>
+                     </tbody>
+                    </table>
+                </div>
+
+                <div class="frame-wrap" style="padding-top:10px">
+                    <nav aria-label="Page navigation">
+                      <ul id="pagination_listTable" class="pagination justify-content-center">
+                           
+                        </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+                
+
+
+        <div class="modal fade" id="modal_input_popup" tabindex="-1" role="dialog" aria-modal="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">실험 프로토콜 추가</h5>
+                <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="panel list is-admin" style="padding:20px 10px">
+                  <div class="row" style="margin-bottom:10px;">
+                    <div class="col-3"><h5>실험 프로토콜명</h5></div>
+                    <div class="col-9"><input type="text" id="title" name="title" maxlength="50" class="form-control"></div>
+                </div>
+
+                <div class="row" style="margin-bottom:10px;">
+                <div class="col-3"><h5>담당자</h5></div>
+                <div class="col-9"><input type="text" id="manager" name="manager" maxlength="50" class="form-control"></div>
+            </div>
+
+            <div class="row" style="margin-bottom:10px;">
+              <div class="col-3"><h5>상세설명</h5></div>
+              <div class="col-9">
+                <textarea type="text" id="desc" name="desc"  style="width:100%" rows="10" class="form-control"></textarea>
+          </div>
+
+          </div>
+              </div>
+              <div class="modal-footer">
+                       
+                  <button type="button" onclick="modifyProtocolAction()" class="btn btn-primary waves-effect waves-themed" >Save</button> 
+                  <button type="button" class="btn modal-close btn-secondary waves-effect waves-themed" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+            </main>
+                      
+          <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> 
+          <footer class="page-footer" role="contentinfo">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendors.bundle.js"></script>
+    <script src="/js/app.bundle.js"></script>
+    <script>
+      window.onload = function(){
+        loadStructure();
+        loadAndDisplayTable(1);
+      }
+      
+
+function search_protocol(){
+
+  loadAndDisplayTable(1);
+}      
+
+      
+function updatePagesize(ps)
+{
+        curpagesize=ps;
+        loadAndDisplayTable(1);
+}
+
+function resetSearch()
+{
+        $("#search_searchKeyword").val('');
+        loadAndDisplayTable(1);
+}
+var pageNumber=1;
+function loadAndDisplayTable(page)
+{
+    
+/*     if(!params)
+        params=last_params;
+ */
+
+    var search=null;
+    var searchParameter=null;
+
+    var orderParameter='dateTime';
+    var order='DESC';
+
+    startDateTime=null
+    endDateTime=null
+
+    pageNumber=page;
+    count=30;   //pagesize
+
+    search_searchKeyword=$("#search_searchKeyword").val();
+    if(search_searchKeyword!="")
+    {
+        search=search_searchKeyword;
+        searchParameter=$("#search_searchParameter").val();
+    }
+
+
+//    obj={"search":search,"searchParameter":searchParameter,"orderParameter":orderParameter,"order":order,"pageNumber":pageNumber,"count":count};
+    //obj={"pageNumber":pageNumber,"count":count};
+    obj = { keyword:search_searchKeyword};
+    getAPI2("/protocols/",obj,"GET",function(data){
+
+        thtml='';
+      if(data){
+
+
+        pageStartIdx=0;
+        pageEndIdxPlus=data.length;
+        if(page>0)
+        {
+          pageStartIdx=count*(page-1);
+          pageEndIdxPlus=pageStartIdx+count;
+        }
+        if(pageEndIdxPlus>data.length)
+          pageEndIdxPlus=data.length;
+
+        for(i=pageStartIdx;i<pageEndIdxPlus;i++)
+        {
+            
+
+            var item=data[i];
+            var stitle=item.title;
+            if(stitle.length>25)
+              stitle=stitle.substring(0,24)+"..";
+            var sdesc=item.desc;
+            if(sdesc.length>75)
+              sdesc=sdesc.substring(0,75)+"..";
+            thtml+='<tr>';
+//            thtml+='<td><input type="checkbox" name="key" value="'+item.deviceFactoryId+'"></td>';
+            thtml+='<td>'+item.id+'</td>';
+            thtml+='<td>'+stitle+'</td>';
+            thtml+='<td>'+sdesc+'</td>';
+            thtml+='<td>'+item.manager+'</td>';
+            
+            thtml+='<td><a href="stiexp_sub.html?id='+item.id+'" class="btn btn-pills btn-primary waves-effect waves-themed">실험관리</a> ';
+            thtml+='<a href="javascript:modifyProtocol('+item.id+')" class="btn btn-pills btn-default waves-effect waves-themed" style="background:#393939">수정</a> ';
+            thtml+='<a href="javascript:removeItem('+item.id+')" class="btn btn-pills btn-default waves-effect waves-themed" style="background:#393939">삭제</a></td>';
+            thtml+='</tr>';
+        }
+      }else
+        {thtml='<tr><td colspan="6" class="text-center">No Items.</td></tr>';}
+
+
+        $("#listTable tbody").html(thtml);
+        var pagingHTML=getPagingHTML(page,count,data.length,"loadAndDisplayTable");
+        $("#pagination_listTable").html(pagingHTML);
+
+    });
+
+
+}
+
+
+//var cur_mode="modify";
+
+function  modifyProtocol(id)
+{
+  
+  cur_id=id;
+//  cur_mode="modify";
+
+if(id=="0")
+{
+         $("#title").val("");
+          $("#manager").val("");
+          $("#desc").val("");
+          $("#modal_input_popup").modal("show");
+
+}
+else{
+
+
+  getAPI2("/protocols/"+id+"/",{},"GET",function(data){
+        if(data)
+        {
+          $("#title").val(data.title);
+          $("#manager").val(data.manager);
+          $("#desc").val(data.desc);
+          
+
+          $("#modal_input_popup").modal("show");
+        }
+
+  });
+
+}
+ 
+
+}
+var cur_id=null;
+function modifyProtocolAction()
+{
+
+  if($("#title").val()=="")
+  {
+    alert('프로토콜명을 입력해주세요.');
+    return;
+  }
+  if($("#manager").val()=="")
+  {
+    alert('담당자명을 입력해주세요.');
+    return;
+  }
+ 
+  var id=cur_id;
+  var obj={
+    
+    "title": $("#title").val(),
+    "manager": $("#manager").val(),
+    "desc": $("#desc").val(),
+  };
+  $("#modal_input_popup").modal("hide");
+  if(cur_id!=0)
+  {
+    obj.id=id;
+    patchAPI("/protocols/",obj,function(data){
+      alert("Changed!");
+            loadAndDisplayTable(pageNumber);
+    });
+/*     getAPI2("/protocols/",obj,"PATCH",function(data){
+      alert("Changed!");
+            loadAndDisplayTable(pageNumber);
+    }); */
+
+  }
+  else{
+    console.log(obj);
+    postAPI("/protocols/",obj,function(data){
+      alert("Added!");
+            loadAndDisplayTable(1);
+    });
+
+  }
+}
+function removeItem(code)
+{
+    
+     if(confirm("정말 삭제하시겠습니까?"))
+     {
+      obj={"id":code};
+      
+      getAPI2("/protocols/"+code+"/",obj,"DELETE",function(data){
+              alert("deleted!");
+              loadAndDisplayTable(pageNumber);
+      });
+
+     }
+  
+}
+    </script>
+  </body>
+</html>

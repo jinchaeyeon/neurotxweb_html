@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infusion Test Analyzer</title>
+    <meta name="description" content="Page Title" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+      <script src="/js/proto_exp_overview_chart.js"></script>
+    <!-- base css -->
+    <link
+      id="vendorsbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/vendors.bundle.css"
+    />
+    <link
+      id="appbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/app.bundle.css"
+    />
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="css/themes/cust-theme-4.css">
+    <link
+      id="myskin"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/skins/skin-master.css"
+    />
+    <link
+    id="myskin"
+    rel="stylesheet"
+    media="screen, print"
+    href="/css/custom.css"
+  />
+    <!-- Place favicon.ico in the root directory -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/img/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      const xt=new Date().getTime();
+      let s = document.createElement('script');
+      s.src = "/js/include.js?var" +xt;
+      s.type = 'text/javascript';
+      s.async = false;
+      s.defer=true;
+      let x = document.getElementsByTagName('script')[document.getElementsByTagName('script').length-1];
+      x.parentNode.insertBefore(s, x);
+    </script>
+    <style>
+      .page
+      {
+        display:inline-block;
+        padding:2px 5px;
+      }
+      .selected
+      {
+        border-radius: 5px ;
+        font-weight:700;
+        color:black;
+        background-color:#fff;
+
+      }
+    </style>
+
+  </head>
+
+  <body class="mod-skin-dark">
+  
+  <div class="page-wrapper">
+    <div class="page-inner">
+       
+        <aside class="page-sidebar"></aside>
+        <div class="page-content-wrapper">
+            <header class="page-header" role="banner"></header>
+            <main id="js-page-content" role="main" class="page-content">
+                <ol class="breadcrumb page-breadcrumb">
+                    <li class="breadcrumb-item"><a href="stiexp.html">프로토콜 리스트</a></li>
+                    <li class="breadcrumb-item"><a href="#" id="proto_name">-</a></li>
+                    <!-- <li class="breadcrumb-item"><a href="#" id="proto_exp_name">-</a></li> -->
+                </ol>
+                
+                <div class="subheader">
+                    <h2 class="subheader-title" >
+                        <span id="proto_exp_name"></span>
+<!--                       <i class="fal fa-chart-line"></i> Result  
+ -->                      
+                      <div>
+                        <div id="proto_exp_duration" style="margin-top:10px;display:inline-block">-:-</div>
+<!--
+
+                        <a class="btn btn-secondary" style="float:right" href="javascript:exportCSV()">Export</a>
+-->                        <a target="_blank" class="btn btn-secondary" style="float:right" id="export_btn" href="#">Export</a>
+                        <a class="btn btn-secondary" style="float:right;margin-right:10px;" href="javascript:startDeleteRegion()" id="btn_delete_region">삭제구간 설정</a>
+                      </div>
+                    </h2>
+                  
+                  </div>
+
+                  <div class="panel list">
+                    
+                    <div class="panel-container">
+                         <div class="panel-content poisition-relative">
+                           <div id="pagination">
+                            
+             
+ 
+                           </div>
+                            
+                             <div id="overviewchart_outer" style="overflow-x:auto;padding-bottom:10px;">
+                                <div id="overviewchart">
+                                  <div style="text-align:center;color:#fff;padding-top:50px;padding-bottom:50px;">loading...</div>
+                                </div>
+                             </div>
+
+                        </div>
+                    </div>
+
+
+                    
+        <div class="modal fade" id="modal_marker_popup" tabindex="-1" role="dialog" aria-modal="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Marker 관리</h5>
+                <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="panel list" style="padding:20px 10px">
+
+
+                  
+                        <div class="row" style="margin-top:0px;margin-bottom:10px;">
+                          <div class="col-4"><h5>시간</h5></div>
+                          <div class="col-8" id="marker_time"> 
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-4"><h5>내용</h5></div>
+                          <div class="col-8">
+                              <textarea class="form-control" id="marker_desc">
+
+                              </textarea>                            
+                          </div>
+
+                        </div>
+
+    
+                      
+                      
+                    
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button id="deleteMarker" type="button" onclick="deleteMarker()" class="btn btn-primary waves-effect waves-themed" >삭제</button>      
+                  <button type="button" onclick="mngMarkerAction()" class="btn btn-primary waves-effect waves-themed" >수정</button> 
+                  <button type="button" class="btn modal-close btn-secondary waves-effect waves-themed" data-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- 
+                    
+        <div class="modal fade" id="modal_marker_popup" tabindex="-1" role="dialog" aria-modal="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Event Marker</h5>
+                <button type="button" class="close modal-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="panel list" style="padding:20px 10px">
+
+
+                  
+                        <div class="row" style="margin-top:30px;margin-bottom:30px;">
+                          <div class="col-4"><h5>시간</h5></div>
+                          <div class="col-8"><p id="popup_event_time"></p>
+                          </div>
+                        </div>
+
+
+                        <div class="row">
+                          <div class="col-4"><h5>내용</h5></div>
+                          <div class="col-8">
+                            <p id="popup_event_memo"></p>
+                          </div>
+
+                        </div>
+
+    
+                      
+                      
+                    
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn modal-close btn-secondary waves-effect waves-themed" data-dismiss="modal">닫기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+ -->
+
+
+
+            </main>
+                      
+          <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> 
+          <footer class="page-footer" role="contentinfo">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendors.bundle.js"></script>
+    <script src="/js/app.bundle.js"></script>
+
+  <script>
+    
+function mngMarkerAction()
+{
+  
+  var id=protocol_exp_id;
+/*   var time_idx=lineArr[0].length-1;
+  var t=lineArr[0][time_idx].time; */
+  var obj={
+    "memo": $("#marker_desc").val(),
+  };
+
+  console.log(obj);
+    patchAPI("/protocolExpsEvent/"+cur_marker_id,obj,function(data){
+      alert("Updated!");
+            
+            $("#modal_marker_popup").modal("hide");
+            loadOverviewChart();
+
+
+    });
+
+
+}
+var cur_marker_id=null;
+var mngMarkerAction_tdate,mngMarkerAction_t;
+
+
+      function deleteMarker()
+      {
+        
+          deleteAPI("/protocolExpsEvent/"+cur_marker_id,{},function(data){
+            alert("Deleted!");
+            
+            
+            $("#modal_marker_popup").modal("hide");
+            loadOverviewChart();
+          });
+
+      }
+
+      window.onload = function(){
+        loadStructure();
+        init();
+      }
+       var page=1;
+       var maxPage=2;
+       var pageSize=250*60; // 20 ms 당1 즉 1초당 50회  / 1분 / 8초 *8
+function loadPage(p)
+{
+    page=p;
+    
+    if(p<2)
+    {
+      $("#prevPage").css("color","#696969");
+      $("#nextPage").css("color","#2877b9");
+      $("#prevPage").attr("href","#");
+      $("#nextPage").attr("href","javascript:nextPage()");
+    }
+    else if(p-1==maxPage)
+    {
+      $("#prevPage").css("color","#2877b9");
+      $("#nextPage").css("color","#696969");
+      $("#prevPage").attr("href","javascript:prevPage()");
+      $("#nextPage").attr("href","#");
+    }
+    else
+    {
+      $("#prevPage").attr("href","javascript:prevPage()");
+      $("#nextPage").attr("href","javascript:nextPage()");
+
+      $("#prevPage").css("color","#2877b9");
+      $("#nextPage").css("color","#2877b9");
+
+    }
+
+    
+
+    loadOverviewChart();  
+}
+       function nextPage()
+       {
+        var p=parseInt(page)+1;
+        $("#pageControl").val(p);
+        loadPage(p);
+       // loadOverviewChart();
+       }
+       function prevPage()
+       {
+        var p=parseInt(page);
+        if(p>1)
+        {
+            p--;
+            $("#pageControl").val(p);
+            loadPage(p);
+           // loadOverviewChart();
+          }
+       }
+
+      var data_PPG=[];
+        var data_X=[];
+        var data_Y=[];
+        var data_Z=[];
+        var data_ACTIVITY=[];
+        var data_LF=[];
+        var data_HF=[];
+        var data_NNI=[];
+
+        function showEventMarker(t,m,id){
+          cur_marker_id=id;
+          $("#marker_time").html(t);
+          $("#marker_desc").html(m);
+          $("#modal_marker_popup").modal("show");
+
+        }
+function startDeleteRegion()
+{
+  d3.select("#noise_section").attr("width",d3.select("#noise_section").attr("ori_width"));
+    d3.selectAll(".noise_handler").attr("opacity",1);
+    d3.selectAll(".noise_handler_bg").attr("opacity",0.5);
+
+    
+    
+
+    $("#btn_delete_region").attr("href","javascript:endDeleteRegion()");
+    $("#btn_delete_region").html("삭제구간 설정완료")
+}
+function endDeleteRegion()
+{
+    d3.select("#noise_section").attr("width",1);
+    d3.selectAll(".noise_handler").attr("opacity",0);
+    var time_s=d3.select("#noise_section").attr("time_s");
+    var time_e=d3.select("#noise_section").attr("time_e");
+    
+    $("#btn_delete_region").html("삭제구간 설정시작");
+    $("#btn_delete_region").attr("href","javascript:startDeleteRegion()");
+
+    deleteAPI("/protocolExpSignal/"+protocol_exp_id+"?start_time="+parseInt(time_s).toString()+"&end_time="+parseInt(time_e).toString(),{},function(data){
+            alert("Deleted!");
+            
+            
+            loadOverviewChart();
+           
+          });
+
+    
+}
+
+var data_trigger=[];
+var data_event=[];
+let exp_max_time=0;
+
+function init(){
+
+  cur_url_param_arr=getLocation(location.href).search.split("&");
+        if(cur_url_param_arr.length>0)
+        {
+          nv=cur_url_param_arr[0].replace("?","").split("=");
+          if(nv[0]=="id")
+          {
+            protocol_exp_id=nv[1];
+            
+          }
+        }
+
+
+            
+        var proto_id=null;
+
+        
+        var turl=api_base_url+"/get_csv/"+protocol_exp_id;
+        $("#export_btn").attr("href",turl);
+
+        getAPI_sync("/protocolExps/"+protocol_exp_id,{},"GET",function(data){
+            $("#proto_exp_name").html(data.name);
+            proto_id=data.proto_id;
+            proto_regdate=data.regdate;
+            proto_regdate=proto_regdate.replace("T"," ");
+            $("#proto_name").attr("href","stiexp_sub.html?id="+proto_id);
+        });
+
+        if(proto_id)
+        {
+            getAPI_sync("/protocols/"+proto_id,{},"GET",function(data){
+                $("#proto_name").html(data.title);
+                
+            });
+
+        }
+
+
+        getAPI_sync("/protocolExpStimulus/"+protocol_exp_id,{},"GET",function(data){
+
+
+data_ACTIVITY=data;
+/*   for(var i=0;i<data.length;i++){
+
+  //intensity: int
+          //interval: int
+          //height: int
+          //time: int
+          R=data[i];
+
+          xtime=new Date();
+          xtime.setTime(R.time);
+
+          var lineData={};
+          lineData["time"]=xtime;
+          lineData["intensity"]=parseFloat(R.intensity);
+          lineData["interval"]=parseFloat(R.interval);
+          lineData["height"]=parseFloat(R.height);
+
+          data_ACTIVITY[data_ACTIVITY.length]=lineData;
+  }
+*/
+
+});
+
+        getAPI_sync("/protocolExpSignal/"+protocol_exp_id+"/PPG/lasttime",{},"GET",function(data){
+            exp_max_time=data;
+            var time_milli_sec=data*4;
+            var time_min=parseInt(time_milli_sec/(60*1000));
+            var time_sec=parseInt(time_milli_sec /1000)-time_min*60;
+            
+            var time_min_txt=time_min<10?"0"+time_min:time_min;
+            var time_sec_txt=time_sec<10?"0"+time_sec:time_sec;
+
+            exp_duration_txt='<div style="line-height:30px;font-size:12pt">시작시간:'+proto_regdate+' / 소요시간:'+time_min_txt+':'+time_sec_txt+'</div>';
+            exp_duration_txt_forlist='시작시간:'+proto_regdate+'<br/>소요시간:'+time_min_txt+':'+time_sec_txt;
+            $("#proto_exp_duration").html(exp_duration_txt);
+
+            
+            maxstimulus=d3.max(data_ACTIVITY,function(c) { return c.intensity});
+            patchAPI("/protocolExps/",{id:protocol_exp_id,proto_id:proto_id,exp_duration:exp_duration_txt_forlist,maxstimulus:maxstimulus},function(){
+
+            })
+            
+
+            thtml='<font style="font-size:18pt">&nbsp;<a id="prevPage" href="#" style="color:#696969"><i class="fal fa-arrow-circle-left"></i></a>';
+            thtml+='<select id="pageControl" onchange="loadPage(this.value)" style="margin-left:50px;margin-right:50px;padding:2px 10px;font-size:15pt;">';
+            
+            maxPage=time_min;
+
+            for(var i=0;i<time_min+1;i++)
+            {
+              if(i==time_min)
+                thtml+='<option value="'+(i+1).toString()+'">'+i+'~'+time_min+"min "+time_sec+'sec</option>';
+              else
+                thtml+='<option value="'+(i+1).toString()+'">'+i+'~'+(i+1).toString()+'min</option>';
+            }
+              
+              //thtml+=' <a class="page" id="page_'+(i+1).toString()+'" href="javascript:loadPage('+(i+1)+')">'+i+'~'+(i+1).toString()+'min</a> | ';
+
+            thtml+="</select>";
+
+
+            
+            thtml+='&nbsp;<a id="nextPage" href="javascript:nextPage()"><i class="fal fa-arrow-circle-right"></i></a></font>';
+            
+                            
+            $("#pagination").html(thtml);
+              
+          });
+
+                
+
+          data_ACTIVITY=[{"proto_exp_id":protocol_exp_id,"intensity":20,"interval":20,"height":20,"time":1,"serial":0,"regdate":null}, ...data_ACTIVITY,
+{"proto_exp_id":protocol_exp_id,"intensity":20,"interval":20,"height":20,"time":exp_max_time,"serial":0,"regdate":null}];
+console.log(data_ACTIVITY);
+
+
+        getAPI_sync("/protocolExpTrigger/"+protocol_exp_id,{},"GET",function(data){
+          data_trigger=data;
+       });
+
+        getAPI_sync("/protocolExpsEvent/"+protocol_exp_id,{},"GET",function(data){
+          data_event=data;
+       });
+
+
+
+        getAPI2("/protocolExpSignal/"+protocol_exp_id,{skip:(page-1)*pageSize,limit:(page)*pageSize},"GET",function(data){
+
+
+          for(var i=0;i<data.length;i++)
+          {
+              R=data[i];
+
+             // xtime=new Date();
+             // xtime.setTime(R.time);
+
+              var lineData={};
+            //  lineData["time"]=xtime;
+            lineData["time"]=R.time;
+            lineData["x"]=parseFloat(R.v);
+              
+
+
+              if(R.code=="PPG")
+              {
+                data_PPG[data_PPG.length]=lineData;
+              }
+              else if(R.code=="X")
+              {
+                data_X[data_X.length]=lineData;
+              }
+              else if(R.code=="Y")
+              {
+                data_Y[data_Y.length]=lineData;
+              }
+              else if(R.code=="Z")
+              {
+                data_Z[data_Z.length]=lineData;
+              }
+              else if(R.code=="LF")
+              {
+                data_LF[data_LF.length]=lineData;
+              }
+              else if(R.code=="HF")
+              {
+                data_HF[data_HF.length]=lineData;
+              }
+              else if(R.code=="NNI")
+              {
+                data_NNI[data_NNI.length]=lineData;
+              }
+
+          }
+  
+
+         /*  if(data_PPG.length>0)
+          {
+            const gapSec=parseInt((data_PPG[data_PPG.length-1].time.getTime()-data_PPG[0].time.getTime())/1000);
+            var fwidth=$("#overviewchart_outer").width();
+
+            var innerWidth=(fwidth*gapSec/60);
+            if(innerWidth<fwidth)
+                innerWidth=fwidth;
+
+            $("#overviewchart").css("width", innerWidth.toString()+"px");
+
+          } */
+            drawOverviewChart("overviewchart",1000,data_PPG,data_X,data_Y,data_Z,data_ACTIVITY,data_LF,data_HF,data_NNI,data_trigger,data_event);
+        });
+    }
+
+    function loadOverviewChart(){
+      $("#overviewchart").html('<div style="text-align:center;color:#fff;padding-top:50px;padding-bottom:50px;">loading...</div>');
+
+      getAPI_sync("/protocolExpsEvent/"+protocol_exp_id,{},"GET",function(data){
+          
+        data_event=data;
+        
+       });
+
+      getAPI2("/protocolExpSignal/"+protocol_exp_id,{skip:(page-1)*pageSize,limit:(page)*pageSize},"GET",function(data){
+
+        data_PPG=[];
+            
+            data_X=[];
+            data_Y=[];
+            data_Z=[];
+            data_LF=[];
+            data_HF=[];
+            data_NNI=[];
+        for(var i=0;i<data.length;i++)
+        {
+            R=data[i];
+
+/*             xtime=new Date();
+            xtime.setTime(R.time);
+ */
+            var lineData={};
+            lineData["time"]=R.time;//xtime
+            lineData["x"]=parseFloat(R.v);
+            
+            
+
+            if(R.code=="PPG")
+            {
+              data_PPG[data_PPG.length]=lineData;
+            }
+            else if(R.code=="X")
+            {
+              data_X[data_X.length]=lineData;
+            }
+            else if(R.code=="Y")
+            {
+              data_Y[data_Y.length]=lineData;
+            }
+            else if(R.code=="Z")
+            {
+              data_Z[data_Z.length]=lineData;
+            }
+            else if(R.code=="LF")
+            {
+              data_LF[data_LF.length]=lineData;
+            }
+            else if(R.code=="HF")
+            {
+              data_HF[data_HF.length]=lineData;
+            }
+            else if(R.code=="NNI")
+            {
+              data_NNI[data_NNI.length]=lineData;
+            }
+
+
+        }
+       drawOverviewChart("overviewchart",1000,data_PPG,data_X,data_Y,data_Z,data_ACTIVITY,data_LF,data_HF,data_NNI,data_trigger,data_event);
+    });
+    }
+    function getBaseFileName(){
+  var filename="";
+
+
+  filename=filename+protocol_exp_id+"_";
+
+ 
+  var date_format_str="";
+  var d=new Date();
+  date_format_str = d.getFullYear().toString()+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+(d.getDate().toString().length==2?d.getDate().toString():"0"+d.getDate().toString())+(d.getHours().toString().length==2?d.getHours().toString():"0"+d.getHours().toString())+((parseInt(d.getSeconds()/5)*5).toString().length==2?(parseInt(d.getSeconds()/5)*5).toString():"0"+(parseInt(d.getSeconds()/5)*5).toString());
+ 
+  filename=filename+date_format_str;
+
+  return filename;
+
+}
+    function exportCSV(){
+  
+        var results = [];
+
+
+results[0]=[];
+
+results[1]=[];
+results[1][0]="SEQ";
+results[1][1]="PPG";
+results[1][2]="X";
+results[1][3]="Y";
+results[1][4]="Z";
+
+
+
+
+max_length=0;
+for(var j=0;j<data_PPG.length;j++)
+{
+    results[j+2]=[];
+    if(data_PPG[j])
+    {
+        //results[j+2][0]=data_PPG[j].time;
+        results[j+2][0]=j+1;
+        results[j+2][1]=data_PPG[j].x;
+        
+    }
+    else
+    {
+        results[j+2][0]="-";
+        results[j+2][1]="-";
+    }
+}
+for(var j=0;j<data_X.length;j++)
+{
+    if(results[j+2]==null)
+        results[j+2]=[];
+    if(data_X[j])
+    {
+        
+        results[j+2][2]=data_X[j].x;
+        
+    }
+    else
+    {
+        
+        results[j+2][2]="-";
+    }
+}
+
+for(var j=0;j<data_Y.length;j++)
+{
+    if(results[j+2]==null)
+        results[j+2]=[];
+    if(data_Y[j])
+    {
+        
+        results[j+2][3]=data_Y[j].x;
+        
+    }
+    else
+    {
+        
+        results[j+2][3]="-";
+    }
+}
+
+for(var j=0;j<data_Z.length;j++)
+{
+    if(results[j+2]==null)
+        results[j+2]=[];
+    if(data_Z[j])
+    {
+        
+        results[j+2][4]=data_Z[j].x;
+        
+    }
+    else
+    {
+        
+        results[j+2][4]="-";
+    }
+}
+//console.log(results);
+  var CsvString = "";
+  results.forEach(function(RowItem, RowIndex) {
+    RowItem.forEach(function(ColItem, ColIndex) {
+      CsvString += ColItem.toString().replace(/(?:\r\n|\r|\n)/g,'').replace(/,/gi,";") + ',';
+    });
+    CsvString += "\r\n";
+  });
+//  CsvString = "data:application/csv," + encodeURIComponent(CsvString);
+ var x = document.createElement("A");
+
+ var blob = new Blob(["\ufeff"+CsvString], {type: 'text/csv;charset=utf-8;'});
+var url = URL.createObjectURL(blob);
+var filename=getBaseFileName();
+ x.setAttribute("href", url );
+ x.setAttribute("download",filename+".csv");
+ document.body.appendChild(x);
+ x.click();
+
+
+    }
+
+    </script>
+  </body>
+</html>

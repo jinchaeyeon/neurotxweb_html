@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Infusion Test Analyzer</title>
+    <meta name="description" content="Page Title" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- base css -->
+    <link
+      id="vendorsbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/vendors.bundle.css"
+    />
+    <link
+      id="appbundle"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/app.bundle.css"
+    />
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="/css/themes/cust-theme-4.css">
+    <link
+      id="myskin"
+      rel="stylesheet"
+      media="screen, print"
+      href="/css/skins/skin-master.css"
+    />
+    <link
+    id="myskin"
+    rel="stylesheet"
+    media="screen, print"
+    href="/css/custom.css"
+  />
+    <!-- Place favicon.ico in the root directory -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/img/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/img/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="mask-icon"
+      href="/img/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      const xt=new Date().getTime();
+      let s = document.createElement('script');
+      s.src = "/js/include.js?var" +xt;
+      s.type = 'text/javascript';
+      s.async = false;
+      s.defer=true;
+      let x = document.getElementsByTagName('script')[document.getElementsByTagName('script').length-1];
+      x.parentNode.insertBefore(s, x);
+    </script>
+
+
+  </head>
+
+  <body class="mod-skin-dark">
+  
+  <div class="page-wrapper">
+    <div class="page-inner">
+       
+        <aside class="page-sidebar"></aside>
+        <div class="page-content-wrapper">
+            <header class="page-header" role="banner"></header>
+            <main id="js-page-content" role="main" class="page-content">
+                <div class="subheader">
+                    <h2 class="subheader-title">
+                      <i class="subheader-icon fal fa-rocket"></i> License List
+                    </h2>
+                  </div>
+
+                  <div class="panel list">
+                    
+                    <div class="panel-container">
+                         <div class="panel-content poisition-relative">
+         
+
+
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-lg-6 col-sm-6">
+                        <a href="javascript:addLicenseKey()" type="button" class="btn btn-pills btn-default waves-effect waves-themed"> <i class="fal fa-plus"></i>  Add Key</a>
+                    </div>
+                    <div class="col-lg-6 col-sm-6">
+
+                        <!--
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3">
+                                <select class="form-control" name="searchParameter" id="search_searchParameter">
+                                    <option value="serialNumber">시리얼번호</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-sm-5">
+                                <input type="text"   id="search_searchKeyword"  name="searchKeyword" class="form-control  rounded-0" placeholder="검색어">
+                            </div>
+                            <div class="col-lg-3 col-sm-4">
+                                <button type="button" class="btn btn-primary waves-effect waves-themed" onclick="loadAndDisplayTable(1)">검색</button>
+                                 <button type="button" class="btn  btn-secondary waves-effect waves-themed" onclick="resetSearch()">초기화</button>
+                            </div>
+                        </div>
+                    
+                    -->
+
+                    </div>
+                </div>
+
+
+                
+                <div class="table-responsive">
+                <table id="listTable" class="table" style="min-width:1000px;margin-top:10px;">
+                        <colgroup>
+                            <col style="width:7%"/>
+                            <col style="width:20%"/>
+                            <col style="width:20%"/>
+                            <col style="width:16%"/>
+                            <col style="width:9%;"/>
+                        </colgroup>
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>serial</th>
+                                <th>license key</th>
+                                <th>used by</th>
+                                <!--
+                                <th>SerialCode</th>
+                                -->
+                                <th>used from</th>
+                                <th> - </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="8">loading...</td>
+                       </tr>
+                     </tbody>
+                    </table>
+                </div>
+
+                <div class="frame-wrap" style="padding-top:10px;">
+                    <nav aria-label="Page navigation">
+                      <ul id="pagination_listTable" class="pagination justify-content-center">
+                           
+                        </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+                
+
+
+
+            </main>
+                      
+          <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> 
+          <footer class="page-footer" role="contentinfo">
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/js/vendors.bundle.js"></script>
+    <script src="/js/app.bundle.js"></script>
+    <script>
+      window.onload = function(){
+        loadStructure();
+        loadAndDisplayTable(1);
+      }
+      
+
+      
+
+      
+function updatePagesize(ps)
+{
+        curpagesize=ps;
+        loadAndDisplayTable(1);
+}
+
+function resetSearch()
+{
+        $("#search_searchKeyword").val('');
+        loadAndDisplayTable(1);
+}
+function loadAndDisplayTable(page)
+{
+    
+/*     if(!params)
+        params=last_params;
+ */
+
+    var search=null;
+    var searchParameter=null;
+
+    var orderParameter='dateTime';
+    var order='DESC';
+
+    startDateTime=null
+    endDateTime=null
+
+    pageNumber=page;
+    count=30;   //pagesize
+
+    search_searchKeyword=$("#search_searchKeyword").val();
+    if(search_searchKeyword!="")
+    {
+        search=search_searchKeyword;
+        searchParameter=$("#search_searchParameter").val();
+    }
+
+
+    obj={"search":search,"searchParameter":searchParameter,"orderParameter":orderParameter,"order":order,"pageNumber":pageNumber,"count":count};
+    //obj={"pageNumber":pageNumber,"count":count};
+    //obj = Object.assign(params,obj);
+    getAPI2("/licenses/",obj,"GET",function(data){
+
+        thtml='';
+      if(data){
+
+      pageStartIdx=0;
+        pageEndIdxPlus=data.length;
+        if(page>0)
+        {
+          pageStartIdx=count*(page-1);
+          pageEndIdxPlus=pageStartIdx+count;
+        }
+        if(pageEndIdxPlus>data.length)
+          pageEndIdxPlus=data.length;
+
+        for(i=pageStartIdx;i<pageEndIdxPlus;i++)
+        {
+            
+            var item=data[i];
+
+            val_used_from=item.used_from;
+            if(!val_used_from)
+            val_used_from="not in use";
+            thtml+='<tr>';
+//            thtml+='<td><input type="checkbox" name="key" value="'+item.deviceFactoryId+'"></td>';
+            thtml+='<td>'+(i+1)+'</td>';
+            thtml+='<td>'+item.license_key+'</td>';
+            thtml+='<td>'+item.username+'</td>';
+            thtml+='<td>'+val_used_from+'</td>';
+            
+            thtml+='<td>';
+            thtml+='<a href="javascript:removeLicenseKey('+item.id+')" style="background:#393939" class="btn btn-pills btn-default waves-effect waves-themed">Delete</a></td>';
+            thtml+='</tr>';
+        }
+      }else
+        {thtml='<tr><td colspan="6" class="text-center">No Items.</td></tr>';}
+
+
+        $("#listTable tbody").html(thtml);
+        var pagingHTML=getPagingHTML(page,count,data.length,"loadAndDisplayTable");
+        $("#pagination_listTable").html(pagingHTML);
+
+    });
+
+
+}
+function generateSerial() {
+    
+    'use strict';
+    
+    var chars = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+        
+        serialLength = 30,
+        
+        randomSerial = "",
+        
+        i,
+        
+        randomNumber;
+    
+    for (i = 0; i < serialLength; i = i + 1) {
+        
+        randomNumber = Math.floor(Math.random() * chars.length);
+        
+        randomSerial += chars.substring(randomNumber, randomNumber + 1);
+        
+    }
+    
+   return randomSerial;
+    
+}
+
+function addLicenseKey()
+{
+    getAPI2("/licenseKey/",null,"GET",function(data){
+        alert("New License Key is Added");
+        loadAndDisplayTable(1);
+    });
+    
+}
+
+
+function removeLicenseKey(id)
+{
+
+    getAPI2("/licenses/"+id,{},"DELETE",function(data){
+        alert("Selected  Key is Deleted");
+        loadAndDisplayTable(1);
+    });
+    
+}
+    </script>
+  </body>
+</html>
